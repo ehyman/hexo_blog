@@ -359,7 +359,7 @@
               
                 
                 <a class="post-title-link" href="/2016/04/13/CI_Multi_App/" itemprop="url">
-                  CI(Codeigniter)框架多应用配置
+                  Codeigniter框架多应用配置
                 </a>
               
             
@@ -372,7 +372,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-13T14:10:00+00:00" content="2016-04-13">
+            <time itemprop="dateCreated" datetime="2016-04-13T14:20:00+00:00" content="2016-04-13">
               2016-04-13
             </time>
           </span>
@@ -401,7 +401,8 @@
       
         
           
-            <p>相关链接 :<a href="https://ellislab.com/codeigniter/user-guide/general/managing_apps.html" target="_blank" rel="external">CI User Guide :managing_apps</a></p>
+            <!-- code shared to github  -->
+<p>相关链接 :<a href="https://ellislab.com/codeigniter/user-guide/general/managing_apps.html" target="_blank" rel="external">CI User Guide :managing_apps</a></p>
 
           
         
@@ -448,7 +449,7 @@
               
                 
                 <a class="post-title-link" href="/2016/04/13/CI_Service/" itemprop="url">
-                  CI(Codeigniter)框架的service层扩展
+                  Codeigniter框架的service层扩展
                 </a>
               
             
@@ -589,14 +590,48 @@
 <li><a href="http://wowubuntu.com/markdown/#list" target="_blank" rel="external">Markdown 中文版语法说明</a></li>
 </ul>
 </blockquote>
-<h1 id="二、Markdown简单语法规则"><a href="#二、Markdown简单语法规则" class="headerlink" title="二、Markdown简单语法规则"></a>二、Markdown简单语法规则</h1><p><strong>标题</strong><br><img src="/images/markdown_title.jpg" alt="markdown title"><br>在 Markdown 中，如果一段文字被定义为标题，只要在这段文字前加 # 号即可。</p>
-<p><code># 一级标题</code><br><code>## 二级标题</code><br><code>### 三级标题</code><br><code>#### 四级标题</code></p>
-<p><strong>列表</strong></p>
-<p><strong>引用</strong></p>
-<p><strong>图片与链接</strong></p>
-<p><strong>斜体与粗体</strong></p>
-<p><strong>表格</strong></p>
-<p><strong>代码框</strong></p>
+<h1 id="二、Markdown简单语法规则"><a href="#二、Markdown简单语法规则" class="headerlink" title="二、Markdown简单语法规则"></a>二、Markdown简单语法规则</h1><p><strong>标题</strong><br><img src="/images/markdown/title.jpg" alt="markdown title" title="标题"><br>在 Markdown 中，如果一段文字被定义为标题，只要在这段文字前加 # 号即可。</p>
+<p><code># 一级标题</code><br><code>## 二级标题</code><br><code>### 三级标题</code><br><code>#### 四级标题</code><br>以此类推，一共6级标题。建议在#号后面加一个空格，这是markdown的最标准写法。</p>
+<p><strong>列表</strong><br>列表分为有序列表和无序列表，无序列表只要在文字前面加上 <code>+</code>、<code>-</code> 或 <code>*</code> 即可变为无序列表，有序列表则在文字前面加上1. 2. 3.，符号和文字之间加一个空格符。<br><img src="/images/markdown/liebiao.jpg" alt="markdown 列表" title="列表"></p>
+<p><strong>引用</strong><br>如果你需要引用一小段别处的句子，那么就要用引用的格式。</p>
+<blockquote>
+<p>例如这样</p>
+</blockquote>
+<p>只需要在文本前加入 &gt; 这种尖括号（大于号）即可<br><img src="/images/markdown/yy.jpg" alt="markdown 引用" title="引用"></p>
+<p><strong>图片与链接</strong><br>图片：<code>![alt text](image url “image title”)</code><br>链接：<code>[alt text](link url)</code><br>插入链接与插入图片的语法很像，区别在一个!号<br><img src="/images/markdown/link_img.jpg" alt="markdown 图片与链接" title="图片与链接"></p>
+<p><strong>斜体与粗体</strong><br>Markdown 的粗体和斜体也非常简单，用两个 <code>*</code> 包含一段文本就是粗体的语法，用一个 <code>*</code> 包含一段文本就是斜体的语法。</p>
+<p>例如：<code>**这里是粗体**</code> <code>*这里是斜体*</code> 解析之后就是：<strong>这里是粗体</strong> <em>这里是斜体</em></p>
+<p><strong>表格</strong><br>表格比较累人，例子如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col <span class="number">3</span> is      | right-aligned | $<span class="number">1600</span> |</span><br><span class="line">| col <span class="number">2</span> is      | centered      |   $<span class="number">12</span> |</span><br><span class="line">| zebra stripes | are neat      |    $<span class="number">1</span> |</span><br></pre></td></tr></table></figure></p>
+<p>这种语法生成的表格如下：</p>
+<table>
+<thead>
+<tr>
+<th>Tables</th>
+<th style="text-align:center">Are</th>
+<th style="text-align:right">Cool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>col 3 is</td>
+<td style="text-align:center">right-aligned</td>
+<td style="text-align:right">$1600</td>
+</tr>
+<tr>
+<td>col 2 is</td>
+<td style="text-align:center">centered</td>
+<td style="text-align:right">$12</td>
+</tr>
+<tr>
+<td>zebra stripes</td>
+<td style="text-align:center">are neat</td>
+<td style="text-align:right">$1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>代码框</strong><br>通常我们会根据您的代码片段适配合适的高亮方法，但你也可以用 <code>```</code> 包裹一段代码，并指定一种语言（当你的代码较多时推荐使用这种方法）</p>
+<p>例如：<br><code><br>```javascript<br>$(document).ready(function () {<br>    alert(‘hello world’);<br>});<br>```<br></code><br>会生成如下格式语法高亮：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	alert(<span class="string">'hello world'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p><strong>分割线</strong></p>
 <p>相关链接 :<a href="http://www.jianshu.com/p/1e402922ee32/" target="_blank" rel="external">Markdown——入门指南</a></p>
 
@@ -674,7 +709,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
