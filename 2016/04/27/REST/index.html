@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Markdown," />
+  <meta name="keywords" content="RESTful API," />
 
 
 
@@ -57,27 +57,22 @@
 
 
 
-<meta name="description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta name="description" content="文章转载自：http://www.ruanyifeng.com/blog/2011/09/restful.htmlhttp://www.ruanyifeng.com/blog/2014/05/restful_api.html
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
+RESTful起源REST这个词，是Roy Thomas Fielding在他2000年的博士论文中提出的。Fielding是一个非常重要的人，他是HTTP协议（1.0版">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Markdown——入门指南">
-<meta property="og:url" content="http://www.shymei.com/2016/04/08/Markdown/index.html">
+<meta property="og:title" content="RESTful">
+<meta property="og:url" content="http://www.shymei.com/2016/04/27/REST/index.html">
 <meta property="og:site_name" content="Hyman">
-<meta property="og:description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta property="og:description" content="文章转载自：http://www.ruanyifeng.com/blog/2011/09/restful.htmlhttp://www.ruanyifeng.com/blog/2014/05/restful_api.html
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
-<meta property="og:image" content="http://www.shymei.com/images/title.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/liebiao.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/yy.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/link_img.jpg">
-<meta property="og:updated_time" content="2016-04-15T05:16:04.535Z">
+RESTful起源REST这个词，是Roy Thomas Fielding在他2000年的博士论文中提出的。Fielding是一个非常重要的人，他是HTTP协议（1.0版">
+<meta property="og:updated_time" content="2016-04-26T13:43:49.422Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Markdown——入门指南">
-<meta name="twitter:description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta name="twitter:title" content="RESTful">
+<meta name="twitter:description" content="文章转载自：http://www.ruanyifeng.com/blog/2011/09/restful.htmlhttp://www.ruanyifeng.com/blog/2014/05/restful_api.html
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
-<meta name="twitter:image" content="http://www.shymei.com/images/title.jpg">
+RESTful起源REST这个词，是Roy Thomas Fielding在他2000年的博士论文中提出的。Fielding是一个非常重要的人，他是HTTP协议（1.0版">
 
 
 
@@ -95,7 +90,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
   };
 </script>
 
-  <title> Markdown——入门指南 | Hyman </title>
+  <title> RESTful | Hyman </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -367,7 +362,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
             
             
               
-                Markdown——入门指南
+                RESTful
               
             
           </h1>
@@ -379,8 +374,8 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-08T05:14:17+08:00" content="2016-04-07">
-              2016-04-07
+            <time itemprop="dateCreated" datetime="2016-04-27T04:53:20+08:00" content="2016-04-26">
+              2016-04-26
             </time>
           </span>
 
@@ -406,74 +401,42 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
       
 
       
-        <p>本博客采用的是<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo</a>搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候<br>接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。<br>Here we go!</p>
-<blockquote>
-<p>Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到这里请不要被「标记」、「语言」所迷惑，Markdown 的语法十分简单。常用的标记符号也不超过十个，这种相对于更为复杂的 HTML 标记语言来说，Markdown 可谓是十分轻量的，学习成本也不需要太多，且一旦熟悉这种语法规则，会有一劳永逸的效果。</p>
+        <blockquote>
+<p>文章转载自：<a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/09/restful.html</a><br><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/05/restful_api.html</a></p>
 </blockquote>
-<h1 id="一、Markdown文档"><a href="#一、Markdown文档" class="headerlink" title="一、Markdown文档"></a>一、Markdown文档</h1><blockquote>
-<ul>
-<li><a href="http://daringfireball.net/projects/syntax" target="_blank" rel="external">创始人 John Gruber 的 Markdown 语法说明</a></li>
-<li><a href="http://wowubuntu.com/#list" target="_blank" rel="external">Markdown 中文版语法说明</a></li>
-</ul>
-</blockquote>
-<h1 id="二、Markdown简单语法规则"><a href="#二、Markdown简单语法规则" class="headerlink" title="二、Markdown简单语法规则"></a>二、Markdown简单语法规则</h1><h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a><strong>标题</strong></h3><p><img src="/images/title.jpg" alt="markdown title" title="标题"><br>在 Markdown 中，如果一段文字被定义为标题，只要在这段文字前加 # 号即可。</p>
-<p><code># 一级标题</code><br><code>## 二级标题</code><br><code>### 三级标题</code><br><code>#### 四级标题</code><br>以此类推，一共6级标题。建议在#号后面加一个空格，这是markdown的最标准写法。</p>
-<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a><strong>列表</strong></h3><p>列表分为有序列表和无序列表，无序列表只要在文字前面加上 <code>+</code>、<code>-</code> 或 <code>*</code> 即可变为无序列表，有序列表则在文字前面加上1. 2. 3.，符号和文字之间加一个空格符。<br><img src="/images/liebiao.jpg" alt="markdown 列表" title="列表"></p>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a><strong>引用</strong></h3><p>如果你需要引用一小段别处的句子，那么就要用引用的格式。</p>
-<blockquote>
-<p>例如这样</p>
-</blockquote>
-<p>只需要在文本前加入 &gt; 这种尖括号（大于号）即可<br><img src="/images/yy.jpg" alt="markdown 引用" title="引用"></p>
-<h3 id="图片与链接"><a href="#图片与链接" class="headerlink" title="图片与链接"></a><strong>图片与链接</strong></h3><p>图片：<code>![alt text](image url “image title”)</code><br>链接：<code>[alt text](link url)</code><br>插入链接与插入图片的语法很像，区别在一个!号<br><img src="/images/link_img.jpg" alt="markdown 图片与链接" title="图片与链接"></p>
-<p>链接的高级技巧</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">这个链接用 <span class="number">1</span> 作为网址变量 [Google][<span class="number">1</span>].</span><br><span class="line">这个链接用 yahoo 作为网址变量 [Yahoo!][yahoo].</span><br><span class="line">然后在文档的结尾为变量赋值（网址）</span><br><span class="line"></span><br><span class="line">  [<span class="number">1</span>]: http:<span class="comment">//www.google.com/</span></span><br><span class="line">  [yahoo]: http:<span class="comment">//www.yahoo.com/</span></span><br></pre></td></tr></table></figure>
-<h3 id="斜体与粗体"><a href="#斜体与粗体" class="headerlink" title="斜体与粗体"></a><strong>斜体与粗体</strong></h3><p>Markdown 的粗体和斜体也非常简单，用两个 <code>*</code> 包含一段文本就是粗体的语法，用一个 <code>*</code> 包含一段文本就是斜体的语法。</p>
-<p>例如：<code>**这里是粗体**</code> <code>*这里是斜体*</code> 解析之后就是：<strong>这里是粗体</strong> <em>这里是斜体</em></p>
-<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a><strong>表格</strong></h3><p>表格比较累人，例子如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col <span class="number">3</span> is      | right-aligned | $<span class="number">1600</span> |</span><br><span class="line">| col <span class="number">2</span> is      | centered      |   $<span class="number">12</span> |</span><br><span class="line">| zebra stripes | are neat      |    $<span class="number">1</span> |</span><br></pre></td></tr></table></figure></p>
-<p>这种语法生成的表格如下：</p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">Are</th>
-<th style="text-align:right">Cool</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<h3 id="代码框"><a href="#代码框" class="headerlink" title="代码框"></a><strong>代码框</strong></h3><p>通常我们会根据您的代码片段适配合适的高亮方法，但你也可以用 <code>```</code> 包裹一段代码，并指定一种语言（当你的代码较多时推荐使用这种方法）</p>
-<p>例如：<br><code><br>```javascript<br>$(document).ready(function () {<br>    alert(‘hello world’);<br>});<br>```<br></code><br>会生成如下格式语法高亮：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	alert(<span class="string">'hello world'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a><strong>分割线</strong></h3><p>分割线的语法只需要三个 <code>*</code> 号，例如：<br><code>***</code><br>生成的分割线为：</p>
-<hr>
-<h3 id="换行"><a href="#换行" class="headerlink" title="换行"></a><strong>换行</strong></h3><p>如果要新起一个段落，请空一行，实现 </p><p> 的效果</p>
-<hr>
-<h3 id="符号转义"><a href="#符号转义" class="headerlink" title="符号转义"></a><strong>符号转义</strong></h3><p>如果你的描述中需要用到 markdown 的符号，比如 <code>_ # *</code> 等，但又不想他被转义，这时候可以在这些符号前加反斜杠，如 \_ \# \* 进行避免。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\_不想这里的文本变斜体\_</span><br><span class="line">\*\*不想这里的文本被加粗\*\*</span><br></pre></td></tr></table></figure></p>
-<p>Markdown 支持在下面这些符号前面加上反斜杠来帮助插入普通的符号：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\   反斜杠</span><br><span class="line">`   反引号</span><br><span class="line">*   星号</span><br><span class="line">_   底线</span><br><span class="line">&#123;&#125;  大括号</span><br><span class="line">[]  方括号</span><br><span class="line">()  括号</span><br><span class="line"><span class="comment">#   井字号</span></span><br><span class="line">+    加号</span><br><span class="line">-    减号</span><br><span class="line">.   英文句点</span><br><span class="line">!   惊叹号</span><br></pre></td></tr></table></figure></p>
-<p>好吧，基础语法基本就说到这里，后面有一些别的点或技巧，再补充！^_^!</p>
-<blockquote>
-<p>相关参考链接 :</p>
-<ul>
-<li><a href="http://www.jianshu.com/p/1e402922ee32/" target="_blank" rel="external">Markdown——入门指南</a></li>
-<li><a href="https://segmentfault.com/t/blogs" target="_blank" rel="external">markdown语法</a> </li>
-</ul>
-</blockquote>
+<h2 id="RESTful"><a href="#RESTful" class="headerlink" title="RESTful"></a>RESTful</h2><h3 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h3><p>REST这个词，是Roy Thomas Fielding在他2000年的博士论文中提出的。<br>Fielding是一个非常重要的人，他是HTTP协议（1.0版和1.1版）的主要设计者、Apache服务器软件的作者之一、Apache基金会的第一任主席。所以，他的这篇论文一经发表，就引起了关注，并且立即对互联网开发产生了深远的影响。</p>
+<h3 id="名称"><a href="#名称" class="headerlink" title="名称"></a>名称</h3><p>Fielding将他对互联网软件的架构原则，定名为REST，即Representational State Transfer的缩写。我对这个词组的翻译是”表现层状态转化”。<br>如果一个架构符合REST原则，就称它为RESTful架构。<br>要理解RESTful架构，最好的方法就是去理解Representational State Transfer这个词组到底是什么意思，它的每一个词代表了什么涵义。如果你把这个名称搞懂了，也就不难体会REST是一种什么样的设计。</p>
+<h3 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h3><p>REST的名称”表现层状态转化”中，省略了主语。”表现层”其实指的是”资源”（Resources）的”表现层”。<br>所谓”资源”，就是网络上的一个实体，或者说是网络上的一个具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的实在。你可以用一个URI（统一资源标识符）指向它，每种资源对应一个特定的URI。要获取这个资源，访问它的URI就可以，因此URI就成了每一个资源的地址或独一无二的识别符。<br>所谓”上网”，就是与互联网上一系列的”资源”互动，调用它的URI。</p>
+<h3 id="表现层"><a href="#表现层" class="headerlink" title="表现层"></a>表现层</h3><p>“资源”是一种信息实体，它可以有多种外在表现形式。我们把”资源”具体呈现出来的形式，叫做它的”表现层”（Representation）。<br>比如，文本可以用txt格式表现，也可以用HTML格式、XML格式、JSON格式表现，甚至可以采用二进制格式；图片可以用JPG格式表现，也可以用PNG格式表现。<br>URI只代表资源的实体，不代表它的形式。严格地说，有些网址最后的”.html”后缀名是不必要的，因为这个后缀名表示格式，属于”表现层”范畴，而URI应该只代表”资源”的位置。它的具体表现形式，应该在HTTP请求的头信息中用Accept和Content-Type字段指定，这两个字段才是对”表现层”的描述。</p>
+<h3 id="状态转化"><a href="#状态转化" class="headerlink" title="状态转化"></a>状态转化</h3><p>访问一个网站，就代表了客户端和服务器的一个互动过程。在这个过程中，势必涉及到数据和状态的变化。<br>互联网通信协议HTTP协议，是一个无状态协议。这意味着，所有的状态都保存在服务器端。因此，如果客户端想要操作服务器，必须通过某种手段，让服务器端发生”状态转化”（State Transfer）。而这种转化是建立在表现层之上的，所以就是”表现层状态转化”。<br>客户端用到的手段，只能是HTTP协议。具体来说，就是HTTP协议里面，四个表示操作方式的动词：GET、POST、PUT、DELETE。它们分别对应四种基本操作：GET用来获取资源，POST用来新建资源（也可以用于更新资源），PUT用来更新资源，DELETE用来删除资源。</p>
+<h3 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h3><p>综合上面的解释，我们总结一下什么是RESTful架构：<br>　　1. 每一个URI代表一种资源；<br>　　2. 客户端和服务器之间，传递这种资源的某种表现层；<br>　　3. 客户端通过四个HTTP动词，对服务器端资源进行操作，实现”表现层状态转化”。</p>
+<h2 id="RESTful-API"><a href="#RESTful-API" class="headerlink" title="RESTful API"></a>RESTful API</h2><h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>API与用户的通信协议，总是使用HTTPs协议。</p>
+<h3 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h3><p>应该尽量将API部署在专用域名之下。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//api.example.com</span></span><br></pre></td></tr></table></figure>
+<p>如果确定API很简单，不会有进一步扩展，可以考虑放在主域名下。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//example.org/api/</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h3><p>应该将API的版本号放入URL。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//api.example.com/v1/</span></span><br></pre></td></tr></table></figure></p>
+<p>另一种做法是，将版本号放在HTTP头信息中，但不如放入URL方便和直观。<a href="https://developer.github.com/v3/media/#request-specific-version" target="_blank" rel="external">Github</a>采用这种做法。</p>
+<h3 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h3><p>路径又称”终点”（endpoint），表示API的具体网址。<br>在RESTful架构中，每个网址代表一种资源（resource），所以网址中不能有动词，只能有名词，而且所用的名词往往与数据库的表格名对应。一般来说，数据库中的表都是同种记录的”集合”（collection），所以API中的名词也应该使用复数。<br>举例来说，有一个API提供动物园（zoo）的信息，还包括各种动物和雇员的信息，则它的路径应该设计成下面这样。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//api.example.com/v1/zoos</span></span><br><span class="line">https:<span class="comment">//api.example.com/v1/animals</span></span><br><span class="line">https:<span class="comment">//api.example.com/v1/employees</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="HTTP动词"><a href="#HTTP动词" class="headerlink" title="HTTP动词"></a>HTTP动词</h3><p>对于资源的具体操作类型，由HTTP动词表示。<br>常用的HTTP动词有下面五个（括号里是对应的SQL命令）。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET（SELECT）：从服务器取出资源（一项或多项）。</span><br><span class="line">POST（CREATE）：在服务器新建一个资源。</span><br><span class="line">PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）。</span><br><span class="line">PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。</span><br><span class="line">DELETE（DELETE）：从服务器删除资源。</span><br></pre></td></tr></table></figure></p>
+<p>还有两个不常用的HTTP动词。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HEAD：获取资源的元数据。</span><br><span class="line">OPTIONS：获取信息，关于资源的哪些属性是客户端可以改变的。</span><br></pre></td></tr></table></figure></p>
+<p>下面是一些例子。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /zoos：列出所有动物园</span><br><span class="line">POST /zoos：新建一个动物园</span><br><span class="line">GET /zoos/ID：获取某个指定动物园的信息</span><br><span class="line">PUT /zoos/ID：更新某个指定动物园的信息（提供该动物园的全部信息）</span><br><span class="line">PATCH /zoos/ID：更新某个指定动物园的信息（提供该动物园的部分信息）</span><br><span class="line">DELETE /zoos/ID：删除某个动物园</span><br><span class="line">GET /zoos/ID/animals：列出某个指定动物园的所有动物</span><br><span class="line">DELETE /zoos/ID/animals/ID：删除某个指定动物园的指定动物</span><br></pre></td></tr></table></figure></p>
+<h3 id="过滤信息"><a href="#过滤信息" class="headerlink" title="过滤信息"></a>过滤信息</h3><p>如果记录数量很多，服务器不可能都将它们返回给用户。API应该提供参数，过滤返回结果。<br>下面是一些常见的参数。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">?limit=<span class="number">10</span>：指定返回记录的数量</span><br><span class="line">?offset=<span class="number">10</span>：指定返回记录的开始位置。</span><br><span class="line">?page=<span class="number">2</span>&amp;per_page=<span class="number">100</span>：指定第几页，以及每页的记录数。</span><br><span class="line">?sortby=name&amp;order=asc：指定返回结果按照哪个属性排序，以及排序顺序。</span><br><span class="line">?animal_type_id=<span class="number">1</span>：指定筛选条件</span><br></pre></td></tr></table></figure></p>
+<p>参数的设计允许存在冗余，即允许API路径和URL参数偶尔有重复。比如，<code>GET /zoo/ID/animals</code> 与 <code>GET /animals?zoo_id=ID</code> 的含义是相同的。</p>
+<h3 id="状态码-Status-Codes"><a href="#状态码-Status-Codes" class="headerlink" title="状态码(Status Codes)"></a>状态码(Status Codes)</h3><p>服务器向用户返回的状态码和提示信息，常见的有以下一些（方括号中是该状态码对应的HTTP动词）。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">200</span> OK - [GET]：服务器成功返回用户请求的数据，该操作是幂等的（Idempotent）。</span><br><span class="line"><span class="number">201</span> CREATED - [POST/PUT/PATCH]：用户新建或修改数据成功。</span><br><span class="line"><span class="number">202</span> Accepted - [*]：表示一个请求已经进入后台排队（异步任务）</span><br><span class="line"><span class="number">204</span> NO CONTENT - [DELETE]：用户删除数据成功。</span><br><span class="line"><span class="number">400</span> INVALID REQUEST - [POST/PUT/PATCH]：用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的。</span><br><span class="line"><span class="number">401</span> Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）。</span><br><span class="line"><span class="number">403</span> Forbidden - [*] 表示用户得到授权（与<span class="number">401</span>错误相对），但是访问是被禁止的。</span><br><span class="line"><span class="number">404</span> NOT FOUND - [*]：用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的。</span><br><span class="line"><span class="number">406</span> Not Acceptable - [GET]：用户请求的格式不可得（比如用户请求JSON格式，但是只有XML格式）。</span><br><span class="line"><span class="number">410</span> Gone -[GET]：用户请求的资源被永久删除，且不会再得到的。</span><br><span class="line"><span class="number">422</span> Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。</span><br><span class="line"><span class="number">500</span> INTERNAL SERVER ERROR - [*]：服务器发生错误，用户将无法判断发出的请求是否成功。</span><br></pre></td></tr></table></figure></p>
+<p>状态码的完全列表参见<a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" target="_blank" rel="external">这里</a>。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ol>
+<li>API的身份认证应该使用<a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="external">OAuth 2.0</a>框架。</li>
+<li>服务器返回的数据格式，应该尽量使用JSON，避免使用XML。</li>
+</ol>
+<p>相关链接：</p>
+<ol>
+<li><a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/09/restful.html</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/05/restful_api.html</a></li>
+<li><a href="https://codeplanet.io/principles-good-restful-api-design/" target="_blank" rel="external">https://codeplanet.io/principles-good-restful-api-design/</a></li>
+<li><a href="https://bourgeois.me/rest/" target="_blank" rel="external">https://bourgeois.me/rest/</a></li>
+<li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" target="_blank" rel="external">https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html</a></li>
+</ol>
 
       
     </div>
@@ -488,7 +451,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
       
         <div class="post-tags">
           
-            <a href="/tags/Markdown/" rel="tag">#Markdown</a>
+            <a href="/tags/RESTful-API/" rel="tag">#RESTful API</a>
           
         </div>
       
@@ -497,12 +460,16 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/04/26/CROS/" rel="next" title="CROS">
+                <i class="fa fa-chevron-left"></i> CROS
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/04/13/CI_Service/" rel="prev" title="Codeigniter框架的service层扩展">
-                Codeigniter框架的service层扩展 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/04/27/CI_RESTful/" rel="prev" title="CI_RESTful">
+                CI_RESTful <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -641,7 +608,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、Markdown文档"><span class="nav-number">1.</span> <span class="nav-text">一、Markdown文档</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、Markdown简单语法规则"><span class="nav-number">2.</span> <span class="nav-text">二、Markdown简单语法规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标题"><span class="nav-number">2.0.1.</span> <span class="nav-text">标题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">2.0.2.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-number">2.0.3.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片与链接"><span class="nav-number">2.0.4.</span> <span class="nav-text">图片与链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#斜体与粗体"><span class="nav-number">2.0.5.</span> <span class="nav-text">斜体与粗体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格"><span class="nav-number">2.0.6.</span> <span class="nav-text">表格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码框"><span class="nav-number">2.0.7.</span> <span class="nav-text">代码框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分割线"><span class="nav-number">2.0.8.</span> <span class="nav-text">分割线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换行"><span class="nav-number">2.0.9.</span> <span class="nav-text">换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#符号转义"><span class="nav-number">2.0.10.</span> <span class="nav-text">符号转义</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RESTful"><span class="nav-number">1.</span> <span class="nav-text">RESTful</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#起源"><span class="nav-number">1.1.</span> <span class="nav-text">起源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#名称"><span class="nav-number">1.2.</span> <span class="nav-text">名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源"><span class="nav-number">1.3.</span> <span class="nav-text">资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表现层"><span class="nav-number">1.4.</span> <span class="nav-text">表现层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态转化"><span class="nav-number">1.5.</span> <span class="nav-text">状态转化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#综述"><span class="nav-number">1.6.</span> <span class="nav-text">综述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RESTful-API"><span class="nav-number">2.</span> <span class="nav-text">RESTful API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协议"><span class="nav-number">2.1.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#域名"><span class="nav-number">2.2.</span> <span class="nav-text">域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本"><span class="nav-number">2.3.</span> <span class="nav-text">版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路径"><span class="nav-number">2.4.</span> <span class="nav-text">路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP动词"><span class="nav-number">2.5.</span> <span class="nav-text">HTTP动词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤信息"><span class="nav-number">2.6.</span> <span class="nav-text">过滤信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态码-Status-Codes"><span class="nav-number">2.7.</span> <span class="nav-text">状态码(Status Codes)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">2.8.</span> <span class="nav-text">其他</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
