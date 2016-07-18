@@ -358,6 +358,332 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/18/network-io-model/" itemprop="url">
+                  Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-18T15:12:03+00:00" content="2016-07-18">
+              2016-07-18
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>文章转载自<a href="http://blog.csdn.net/historyasamirror/article/details/5778378" target="_blank" rel="external">IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）</a><br>  <a href="http://blog.csdn.net/historyasamirror/article/details/5778378" target="_blank" rel="external">http://blog.csdn.net/historyasamirror/article/details/5778378</a></p>
+</blockquote>
+<p>同步IO(synchronous IO)、异步IO(asynchronous IO)、阻塞IO(blocking IO)、非阻塞IO(non-blocking IO)分别是什么，到底有什么区别？其实不同的人给出的答案都有可能不同，比如wiki就认为asynchronous IO和non-blocking IO是同一个东西，这其实是因为不同的人的知识背景不同，并且在讨论这个问题的时候上下文(context)也不相同。所以，为了更好的回答这个问题，我先限定一下本文的上下文。本文讨论的背景是Linux环境下的network IO。</p>
+<p><strong>本文最重要的参考文献是Richard Stevens的“UNIX® Network Programming Volume 1, Third Edition: The Sockets Networking ”，6.2节“I/O Models ”，Stevens在这节中详细说明了各种IO的特点和区别，如果英文够好的话，推荐直接阅读。Stevens的文风是有名的深入浅出，所以不用担心看不懂。本文中的流程图也是截取自参考文献。</strong></p>
+<p>Stevens在文章中一共比较了五种IO Model：</p>
+<ul>
+<li>blocking IO</li>
+<li>nonblocking IO</li>
+<li>IO multiplexing</li>
+<li>signal driven IO</li>
+<li>asynchronous IO</li>
+</ul>
+<p>由于signal driven IO在实际中并不常用，所以我这只提及剩下的四种IO Model。</p>
+<p>再说一下IO发生时涉及的对象和步骤。对于一个network IO (这里我们以read举例)，它会涉及到两个系统对象，一个是调用这个IO的process (or thread)，另一个就是系统内核(kernel)。当一个read操作发生时，它会经历两个阶段：</p>
+<ul>
+<li>等待数据准备 (Waiting for the data to be ready)</li>
+<li>将数据从内核拷贝到进程中 (Copying the data from the kernel to the process)</li>
+</ul>
+<p>记住这两点很重要，因为这些IO Model的区别就是在两个阶段上各有不同的情况。</p>
+<h2 id="阻塞IO-blocking-IO"><a href="#阻塞IO-blocking-IO" class="headerlink" title="阻塞IO (blocking IO)"></a>阻塞IO (blocking IO)</h2><p>在linux中，默认情况下，所有的socket都是blocking，一个典型的读操作流程大概是这样的：<br><img src="/images/linux_network_io_models/blocking-io.gif" alt="blocking IO" title="blocking IO"></p>
+<p>当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一阶段：准备数据。对于network io来说，很多时候数据在一开始还没有到达，比如还没有收到一个完整的udp包，这个时候kernel就要等待足够的数据到来。而在用户进程这边，整个进程会一直被阻塞。直到kernel准备好了数据，它就会中数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才接触block状态，重新运行起来。</p>
+<p>所以，blocking IO的特点就是在执行IO的两个阶段都被block了。</p>
+<h2 id="非阻塞IO-non-blocking-IO"><a href="#非阻塞IO-non-blocking-IO" class="headerlink" title="非阻塞IO (non-blocking IO)"></a>非阻塞IO (non-blocking IO)</h2><p>linux下，可以通过设置socket使其变为non-blocking。当对一个non-blocking socket执行读操作时，流程是这个样子：<br><img src="/images/linux_network_io_models/non-blocking-io.gif" alt="non-blocking IO" title="non-blocking IO"><br>从图中可以看出，当用户发出read操作时，如果kernel中的数据还没有准备好，那么它并不会block用户进程，而是会立马返回一个error，从用户进程角度讲，它发起一个read操作后，并不需要等待，而是马上得到一个结果。用户进程判断返回结果是error时，它就知道数据还没准备好，于是它可以再次发送read操作。一旦kernel中的数据准备好了，并且又再次收到用户进程的system call，那么它马上就将数据拷贝到用户内存，然后立马返回。所以，用户进程其实是需要不断的主动询问kernel数据准备好了没有。</p>
+<h2 id="IO复用-IO-multiplexing"><a href="#IO复用-IO-multiplexing" class="headerlink" title="IO复用 (IO multiplexing)"></a>IO复用 (IO multiplexing)</h2><p>IO Multiplexing 这个词大家也许会陌生，但是如果说select,epoll大家就都明白了。有些地方也称这种IO方式为event driven IO。我们都知道，select/epoll的好处就在于单个process就可以同时处理多个网络连接的IO。它的基本原理就是select/epoll这个function会不断的轮询所负责的socket，当某个socket数据到达了，就通知用户进程。它的流程如下：<br>!(IO Multiplexing)[/images/linux_network_io_models/io_multiplexing.gif “IO Multiplexing”]</p>
+<p>当用户进程调用了select，那么整个用户进程会被block，而同时，kernel会监控select所负责的socket，当任何一个socket中的数据准备好了，sekect就会返回。这个时候用户进程再进行read操作，将数据从kernel拷贝到用户进程。这个图和blocking IO的图没有太大的不同，事实上还更差一些。因为这个需要使用两个system call(select和recvfrom),而blocking IO只调用了一个system call(recvfrom)，但是用select的优势在于它可以同时处理多个connection。(多说一句，所以如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用mult-threading + blocking IO 的web server性能好，可能延迟还更大，select/epoll的优势并不在于对于单个连接能处理的多快，而是在于能处理更多的链接 )</p>
+<p>在IO Multiplexing Model中，实际上，对于每一个socket,一般都设置成non-blocking的，但是如上图所示，整个用户的进程都是一直被block的，是不过process是被select这个function block,而不是被socket IO给block。</p>
+<h2 id="异步IO-asynchronous-IO"><a href="#异步IO-asynchronous-IO" class="headerlink" title="异步IO (asynchronous IO)"></a>异步IO (asynchronous IO)</h2><p>linux下的asynchronous IO其实用得很少。先看一下它的流程：<br><img src="/images/linux_network_io_models/asynchronous-io.gif" alt="asynchronous IO" title="asynchoronous IO"></p>
+<p>用户进程发起read操作之后就立即去做其他的事情。而另一个方面，从kernel的角度讲，当它收到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何block,然后kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切完成后，kernel会给用户发送一个signal，告诉它read操作完成了。</p>
+<p>到目前为止，已经将四个IO Model都介绍完了。现在回过头来回答最初的那几个问题：blocking和non-blocking的区别在哪，synchronous IO和asynchronous IO的区别在哪。<br>先回答最简单的这个：blocking vs non-blocking。前面的介绍中其实已经很明确的说明了这两者的区别。调用blocking IO会一直block住对应的进程直到操作完成，而non-blocking IO在kernel还准备数据的情况下会立刻返回。</p>
+<p>在说明synchronous IO和asynchronous IO的区别之前，需要先给出两者的定义。Stevens给出的定义（其实是POSIX的定义）是这样子的：</p>
+<ul>
+<li><strong> A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes; </strong></li>
+<li><strong> An asynchronous I/O operation does not cause the requesting process to be blocked; </strong></li>
+</ul>
+<p>两者的区别就在于synchronous IO做”IO operation”的时候会将process阻塞。按照这个定义，之前所述的blocking IO，non-blocking IO，IO multiplexing都属于synchronous IO。有人可能会说，non-blocking IO并没有被block啊。这里有个非常“狡猾”的地方，定义中所指的”IO operation”是指真实的IO操作，就是例子中的recvfrom这个system call。non-blocking IO在执行recvfrom这个system call的时候，如果kernel的数据没有准备好，这时候不会block进程。但是，当kernel中数据准备好的时候，recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。而asynchronous IO则不一样，当进程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉进程说IO完成。在这整个过程中，进程完全没有被block。</p>
+<p>各个IO Model的比较如图所示：<br><img src="/images/linux_network_io_models/io-models-comparison.gif" alt="Comparison of the five IO models" title="Comparison of the five IO models"></p>
+<p>经过上面的介绍，会发现non-blocking IO和asynchronous IO的区别还是很明显的。在non-blocking IO中，虽然进程大部分时间都不会被block，但是它仍然要求进程去主动的check，并且当数据准备完成以后，也需要进程主动的再次调用recvfrom来将数据拷贝到用户内存。而asynchronous IO则完全不同。它就像是用户进程将整个IO操作交给了他人（kernel）完成，然后他人做完后发信号通知。在此期间，用户进程不需要去检查IO操作的状态，也不需要主动的去拷贝数据。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/28/nginx-01-install-and-config/" itemprop="url">
+                  nginx安装和配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-27T17:29:16+00:00" content="2016-06-27">
+              2016-06-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><h3 id="依赖包安装"><a href="#依赖包安装" class="headerlink" title="依赖包安装"></a>依赖包安装</h3>nginx依赖主要是PCRE，zlib和openssl这三个依赖包，依赖包可以直接yum安装，<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum -y install gcc gcc-c++ make libtool zlib zlib-devel openssl openssl-devel pcre pcre-devel</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>也可以源码安装：</p>
+<p>PCRE: the PCRE library – required by NGINX Core and Rewrite modules and provides support for regular expressions.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.38.tar.gz</span><br><span class="line">$ tar -zxf pcre-8.38.tar.gz</span><br><span class="line">$ cd pcre-8.38</span><br><span class="line">$ ./configure</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>zlib: the zlib library – required by NGINX Gzip module for headers compression.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://zlib.net/zlib-1.2.8.tar.gz</span><br><span class="line">$ tar -zxf zlib-1.2.8.tar.gz</span><br><span class="line">$ cd zlib-1.2.8</span><br><span class="line">$ ./configure</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>openssl: the OpenSSL library – required by NGINX SSL modules to support the HTTPS protocol.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://www.openssl.org/source/openssl-1.0.2f.tar.gz</span><br><span class="line">$ tar -zxf openssl-1.0.2f.tar.gz</span><br><span class="line">$ cd openssl-1.0.2f</span><br><span class="line">$ ./configure darwin64-x86_64-cc --prefix=/usr</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3>从<a href="http://nginx.org/en/download.html" target="_blank" rel="external">http://nginx.org/en/download.html</a>下载nginx稳定版本，解压安装，我当前稳定版本是<code>nginx-1.10.1</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://nginx.org/download/nginx-1.10.1.tar.gz</span><br><span class="line">$ tar zxvf nginx-1.10.1.tar.gz</span><br><span class="line">$ cd nginx-1.10.1</span><br><span class="line">$ ./configure --with-pcre \</span><br><span class="line">    	--with-http_stub_status_module \</span><br><span class="line">    	--with-http_ssl_module \</span><br><span class="line">    	--with-http_gzip_static_module \</span><br><span class="line">    	--with-http_realip_module</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>ok, 安装完毕。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><blockquote>
+<p>文章参考<br>    <a href="https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/" target="_blank" rel="external">https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/</a><br>    <a href="http://seanlook.com/2015/05/17/nginx-install-and-config/" target="_blank" rel="external">http://seanlook.com/2015/05/17/nginx-install-and-config/</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/27/ajaxFileUpload/" itemprop="url">
+                  ajax文件上传的另外一种思路
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-27T12:16:14+00:00" content="2016-06-27">
+              2016-06-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>文件上传一般最简单的是用form提交file表单到后端，后端接收文件流数据保存处理即可。比如：</p>
+<h2 id="form表单提交方式"><a href="#form表单提交方式" class="headerlink" title="form表单提交方式"></a>form表单提交方式</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//前端html</span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"/fileupload.php"</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span>  <span class="attr">multiple</span>=<span class="string">"multiple"</span> /&gt;</span>			</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"提交"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="comment">//后端php获取文件：</span></span><br><span class="line">print_r($_FILES);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>现在介绍另外一种解决文件上传的方式，采用fileReader读取文件数据（base64格式的文件数据），再ajax提交到后端处理。<br>直接看代码：</p>
+<h2 id="js获取文件数据ajax提交方式"><a href="#js获取文件数据ajax提交方式" class="headerlink" title="js获取文件数据ajax提交方式"></a>js获取文件数据ajax提交方式</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">id</span>=<span class="string">"files"</span> <span class="attr">name</span>=<span class="string">"files[]"</span> <span class="attr">onchange</span>=<span class="string">"handleFileSelect();"</span> <span class="attr">multiple</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">output</span> <span class="attr">id</span>=<span class="string">"list"</span>&gt;</span><span class="tag">&lt;/<span class="name">output</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">name</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"提交"</span> <span class="attr">onclick</span>=<span class="string">"postData();"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="xml"></span><br><span class="line">	var fileInfo = [];</span><br><span class="line">	function postData() &#123;</span><br><span class="line">		var data = &#123;&#125;;</span><br><span class="line">		data.files = fileInfo;</span><br><span class="line">	</span><br><span class="line">		var putData = &#123;&#125;;</span><br><span class="line">		putData.data = JSON.stringify(data);</span><br><span class="line">	</span><br><span class="line">		$.ajax(&#123;</span><br><span class="line">			url: 'http://sometest.com/api',</span><br><span class="line">			type: 'PUT', //此处采用的是put，因为我实际场景中是rest接口</span><br><span class="line">			dataType: 'json',</span><br><span class="line">			data: &#123;'data': putData.data&#125;,</span><br><span class="line">			success: function(ret)</span><br><span class="line">			&#123;</span><br><span class="line">				window.console.log('success');</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function handleFileSelect() &#123;</span><br><span class="line">		var files = $("#files")[0].files; </span><br><span class="line">		for (var i = 0, f; f = files[i]; i++) &#123;</span><br><span class="line">			if (!f.type.match('image.*')) &#123;</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">			var reader = new FileReader();</span><br><span class="line">	</span><br><span class="line">			reader.onload = (function(theFile) &#123;</span><br><span class="line">				return function(e) &#123;</span><br><span class="line">					var span = document.createElement('span');</span><br><span class="line">					span.innerHTML = </span><br><span class="line">						['<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"', e.target.result, '"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span></span><br><span class="line">							<span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"thumb"</span> <span class="attr">src</span>=<span class="string">"', e.target.result,'"</span> <span class="attr">title</span>=<span class="string">"', escape(theFile.name), '"</span>/&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span>'].join('');</span><br><span class="line">					document.getElementById('list').insertBefore(span, null);</span><br><span class="line">					fileInfo.push(e.target.result);</span><br><span class="line">				&#125;;</span><br><span class="line">			&#125;)(f);</span><br><span class="line">	</span><br><span class="line">			// reader.onload = function(e) &#123;</span><br><span class="line">			//     fileInfo.push(e.target.result);</span><br><span class="line">			// &#125;;</span><br><span class="line"></span><br><span class="line">			reader.readAsDataURL(f);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参考链接：<br>    <a href="https://vace.me/20160112-javascript-file-and-binary.html" target="_blank" rel="external">https://vace.me/20160112-javascript-file-and-binary.html</a><br>    <a href="http://www.html5rocks.com/zh/tutorials/file/dndfiles/" target="_blank" rel="external">http://www.html5rocks.com/zh/tutorials/file/dndfiles/</a><br>    <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader" target="_blank" rel="external">https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader</a><br>    <a href="https://developer.mozilla.org/zh-CN/docs/Using_files_from_web_applications" target="_blank" rel="external">https://developer.mozilla.org/zh-CN/docs/Using_files_from_web_applications</a><br>    <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/sendAsBinary" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/sendAsBinary</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/04/27/CI_RESTful/" itemprop="url">
                   Codeigniter RESTful Api
                 </a>
@@ -615,7 +941,8 @@
         
           
             <p>背景：现在进行web开发，基本都会使用前后端分离的方式，最近手上的一个项目就是采用这种方式，<br>后端采用PHP，前段采用AngularJS，前后端放在不同的域名下，所以面临一个前段跨域请求的问题。</p>
-<h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><h2 id="几种常见的跨域方案"><a href="#几种常见的跨域方案" class="headerlink" title="几种常见的跨域方案"></a>几种常见的跨域方案</h2>
+<h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><h2 id="几种常见的跨域方案"><a href="#几种常见的跨域方案" class="headerlink" title="几种常见的跨域方案"></a>几种常见的跨域方案</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//js jquery $.ajax跨域选项：crossDomain, xhrFields</span></span><br><span class="line">$.ajax(&#123;</span><br><span class="line">	url: <span class="string">'http://www.test.com/api'</span>,</span><br><span class="line">	type: <span class="string">'PUT'</span>,</span><br><span class="line">	dataType: <span class="string">'json'</span>,</span><br><span class="line">	crossDomain: <span class="literal">true</span>, <span class="comment">//(默认: 同域请求为false， 跨域请求为true)</span></span><br><span class="line">	xhrFields:&#123;	</span><br><span class="line">		<span class="comment">//一对“文件名-文件值”组成的映射，用于设定原生的 XHR对象。</span></span><br><span class="line">		<span class="comment">//例如，如果需要的话，在进行跨域请求时，你可以用它来设置withCredentials为true。</span></span><br><span class="line">		<span class="comment">//jquery version &gt;= 1.5</span></span><br><span class="line">		withCredentials: <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line">	data: &#123;<span class="string">'data'</span>: data&#125;,</span><br><span class="line">	success: <span class="function"><span class="keyword">function</span>(<span class="params">ret</span>)</span><br><span class="line">	</span>&#123;</span><br><span class="line">		<span class="built_in">window</span>.console.log(<span class="string">'success'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
           
         
       
@@ -1066,7 +1393,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1076,7 +1403,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

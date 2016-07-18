@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Markdown," />
+  <meta name="keywords" content="I/O Models 同步，异步，阻塞，非阻塞," />
 
 
 
@@ -57,27 +57,27 @@
 
 
 
-<meta name="description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta name="description" content="文章转载自IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）  http://blog.csdn.net/historyasamirror/article/details/5778378
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
+同步IO(synchronous IO)、异步IO(asynchronous IO)、阻塞IO(blocking IO)、非阻塞IO(non-blocking IO)分别是什么，到底有什么区别？其实不同的人给">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Markdown——入门指南">
-<meta property="og:url" content="http://www.shymei.com/2016/04/08/Markdown/index.html">
+<meta property="og:title" content="Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞">
+<meta property="og:url" content="http://www.shymei.com/2016/07/18/network-io-model/index.html">
 <meta property="og:site_name" content="Hyman">
-<meta property="og:description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta property="og:description" content="文章转载自IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）  http://blog.csdn.net/historyasamirror/article/details/5778378
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
-<meta property="og:image" content="http://www.shymei.com/images/title.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/liebiao.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/yy.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/link_img.jpg">
-<meta property="og:updated_time" content="2016-04-15T05:16:04.535Z">
+同步IO(synchronous IO)、异步IO(asynchronous IO)、阻塞IO(blocking IO)、非阻塞IO(non-blocking IO)分别是什么，到底有什么区别？其实不同的人给">
+<meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/blocking-io.gif">
+<meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/non-blocking-io.gif">
+<meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/asynchronous-io.gif">
+<meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/io-models-comparison.gif">
+<meta property="og:updated_time" content="2016-07-18T09:58:25.362Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Markdown——入门指南">
-<meta name="twitter:description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta name="twitter:title" content="Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞">
+<meta name="twitter:description" content="文章转载自IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）  http://blog.csdn.net/historyasamirror/article/details/5778378
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
-<meta name="twitter:image" content="http://www.shymei.com/images/title.jpg">
+同步IO(synchronous IO)、异步IO(asynchronous IO)、阻塞IO(blocking IO)、非阻塞IO(non-blocking IO)分别是什么，到底有什么区别？其实不同的人给">
+<meta name="twitter:image" content="http://www.shymei.com/images/linux_network_io_models/blocking-io.gif">
 
 
 
@@ -95,7 +95,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
   };
 </script>
 
-  <title> Markdown——入门指南 | Hyman </title>
+  <title> Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞 | Hyman </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -367,7 +367,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
             
             
               
-                Markdown——入门指南
+                Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞
               
             
           </h1>
@@ -379,8 +379,8 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-08T05:14:17+08:00" content="2016-04-07">
-              2016-04-07
+            <time itemprop="dateCreated" datetime="2016-07-18T23:12:03+08:00" content="2016-07-18">
+              2016-07-18
             </time>
           </span>
 
@@ -406,74 +406,44 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
       
 
       
-        <p>本博客采用的是<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo</a>搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候<br>接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。<br>Here we go!</p>
-<blockquote>
-<p>Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到这里请不要被「标记」、「语言」所迷惑，Markdown 的语法十分简单。常用的标记符号也不超过十个，这种相对于更为复杂的 HTML 标记语言来说，Markdown 可谓是十分轻量的，学习成本也不需要太多，且一旦熟悉这种语法规则，会有一劳永逸的效果。</p>
+        <blockquote>
+<p>文章转载自<a href="http://blog.csdn.net/historyasamirror/article/details/5778378" target="_blank" rel="external">IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）</a><br>  <a href="http://blog.csdn.net/historyasamirror/article/details/5778378" target="_blank" rel="external">http://blog.csdn.net/historyasamirror/article/details/5778378</a></p>
 </blockquote>
-<h1 id="一、Markdown文档"><a href="#一、Markdown文档" class="headerlink" title="一、Markdown文档"></a>一、Markdown文档</h1><blockquote>
+<p>同步IO(synchronous IO)、异步IO(asynchronous IO)、阻塞IO(blocking IO)、非阻塞IO(non-blocking IO)分别是什么，到底有什么区别？其实不同的人给出的答案都有可能不同，比如wiki就认为asynchronous IO和non-blocking IO是同一个东西，这其实是因为不同的人的知识背景不同，并且在讨论这个问题的时候上下文(context)也不相同。所以，为了更好的回答这个问题，我先限定一下本文的上下文。本文讨论的背景是Linux环境下的network IO。</p>
+<p><strong>本文最重要的参考文献是Richard Stevens的“UNIX® Network Programming Volume 1, Third Edition: The Sockets Networking ”，6.2节“I/O Models ”，Stevens在这节中详细说明了各种IO的特点和区别，如果英文够好的话，推荐直接阅读。Stevens的文风是有名的深入浅出，所以不用担心看不懂。本文中的流程图也是截取自参考文献。</strong></p>
+<p>Stevens在文章中一共比较了五种IO Model：</p>
 <ul>
-<li><a href="http://daringfireball.net/projects/syntax" target="_blank" rel="external">创始人 John Gruber 的 Markdown 语法说明</a></li>
-<li><a href="http://wowubuntu.com/#list" target="_blank" rel="external">Markdown 中文版语法说明</a></li>
+<li>blocking IO</li>
+<li>nonblocking IO</li>
+<li>IO multiplexing</li>
+<li>signal driven IO</li>
+<li>asynchronous IO</li>
 </ul>
-</blockquote>
-<h1 id="二、Markdown简单语法规则"><a href="#二、Markdown简单语法规则" class="headerlink" title="二、Markdown简单语法规则"></a>二、Markdown简单语法规则</h1><h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a><strong>标题</strong></h3><p><img src="/images/title.jpg" alt="markdown title" title="标题"><br>在 Markdown 中，如果一段文字被定义为标题，只要在这段文字前加 # 号即可。</p>
-<p><code># 一级标题</code><br><code>## 二级标题</code><br><code>### 三级标题</code><br><code>#### 四级标题</code><br>以此类推，一共6级标题。建议在#号后面加一个空格，这是markdown的最标准写法。</p>
-<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a><strong>列表</strong></h3><p>列表分为有序列表和无序列表，无序列表只要在文字前面加上 <code>+</code>、<code>-</code> 或 <code>*</code> 即可变为无序列表，有序列表则在文字前面加上1. 2. 3.，符号和文字之间加一个空格符。<br><img src="/images/liebiao.jpg" alt="markdown 列表" title="列表"></p>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a><strong>引用</strong></h3><p>如果你需要引用一小段别处的句子，那么就要用引用的格式。</p>
-<blockquote>
-<p>例如这样</p>
-</blockquote>
-<p>只需要在文本前加入 &gt; 这种尖括号（大于号）即可<br><img src="/images/yy.jpg" alt="markdown 引用" title="引用"></p>
-<h3 id="图片与链接"><a href="#图片与链接" class="headerlink" title="图片与链接"></a><strong>图片与链接</strong></h3><p>图片：<code>![alt text](image url “image title”)</code><br>链接：<code>[alt text](link url)</code><br>插入链接与插入图片的语法很像，区别在一个!号<br><img src="/images/link_img.jpg" alt="markdown 图片与链接" title="图片与链接"></p>
-<p>链接的高级技巧</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">这个链接用 <span class="number">1</span> 作为网址变量 [Google][<span class="number">1</span>].</span><br><span class="line">这个链接用 yahoo 作为网址变量 [Yahoo!][yahoo].</span><br><span class="line">然后在文档的结尾为变量赋值（网址）</span><br><span class="line"></span><br><span class="line">  [<span class="number">1</span>]: http:<span class="comment">//www.google.com/</span></span><br><span class="line">  [yahoo]: http:<span class="comment">//www.yahoo.com/</span></span><br></pre></td></tr></table></figure>
-<h3 id="斜体与粗体"><a href="#斜体与粗体" class="headerlink" title="斜体与粗体"></a><strong>斜体与粗体</strong></h3><p>Markdown 的粗体和斜体也非常简单，用两个 <code>*</code> 包含一段文本就是粗体的语法，用一个 <code>*</code> 包含一段文本就是斜体的语法。</p>
-<p>例如：<code>**这里是粗体**</code> <code>*这里是斜体*</code> 解析之后就是：<strong>这里是粗体</strong> <em>这里是斜体</em></p>
-<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a><strong>表格</strong></h3><p>表格比较累人，例子如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col <span class="number">3</span> is      | right-aligned | $<span class="number">1600</span> |</span><br><span class="line">| col <span class="number">2</span> is      | centered      |   $<span class="number">12</span> |</span><br><span class="line">| zebra stripes | are neat      |    $<span class="number">1</span> |</span><br></pre></td></tr></table></figure></p>
-<p>这种语法生成的表格如下：</p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">Are</th>
-<th style="text-align:right">Cool</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<h3 id="代码框"><a href="#代码框" class="headerlink" title="代码框"></a><strong>代码框</strong></h3><p>通常我们会根据您的代码片段适配合适的高亮方法，但你也可以用 <code>```</code> 包裹一段代码，并指定一种语言（当你的代码较多时推荐使用这种方法）</p>
-<p>例如：<br><code><br>```javascript<br>$(document).ready(function () {<br>    alert(‘hello world’);<br>});<br>```<br></code><br>会生成如下格式语法高亮：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	alert(<span class="string">'hello world'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a><strong>分割线</strong></h3><p>分割线的语法只需要三个 <code>*</code> 号，例如：<br><code>***</code><br>生成的分割线为：</p>
-<hr>
-<h3 id="换行"><a href="#换行" class="headerlink" title="换行"></a><strong>换行</strong></h3><p>如果要新起一个段落，请空一行，实现 </p><p> 的效果</p>
-<hr>
-<h3 id="符号转义"><a href="#符号转义" class="headerlink" title="符号转义"></a><strong>符号转义</strong></h3><p>如果你的描述中需要用到 markdown 的符号，比如 <code>_ # *</code> 等，但又不想他被转义，这时候可以在这些符号前加反斜杠，如 \_ \# \* 进行避免。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\_不想这里的文本变斜体\_</span><br><span class="line">\*\*不想这里的文本被加粗\*\*</span><br></pre></td></tr></table></figure></p>
-<p>Markdown 支持在下面这些符号前面加上反斜杠来帮助插入普通的符号：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\   反斜杠</span><br><span class="line">`   反引号</span><br><span class="line">*   星号</span><br><span class="line">_   底线</span><br><span class="line">&#123;&#125;  大括号</span><br><span class="line">[]  方括号</span><br><span class="line">()  括号</span><br><span class="line"><span class="comment">#   井字号</span></span><br><span class="line">+    加号</span><br><span class="line">-    减号</span><br><span class="line">.   英文句点</span><br><span class="line">!   惊叹号</span><br></pre></td></tr></table></figure></p>
-<p>好吧，基础语法基本就说到这里，后面有一些别的点或技巧，再补充！^_^!</p>
-<blockquote>
-<p>相关参考链接 :</p>
+<p>由于signal driven IO在实际中并不常用，所以我这只提及剩下的四种IO Model。</p>
+<p>再说一下IO发生时涉及的对象和步骤。对于一个network IO (这里我们以read举例)，它会涉及到两个系统对象，一个是调用这个IO的process (or thread)，另一个就是系统内核(kernel)。当一个read操作发生时，它会经历两个阶段：</p>
 <ul>
-<li><a href="http://www.jianshu.com/p/1e402922ee32/" target="_blank" rel="external">Markdown——入门指南</a></li>
-<li><a href="https://segmentfault.com/t/blogs" target="_blank" rel="external">markdown语法</a> </li>
+<li>等待数据准备 (Waiting for the data to be ready)</li>
+<li>将数据从内核拷贝到进程中 (Copying the data from the kernel to the process)</li>
 </ul>
-</blockquote>
+<p>记住这两点很重要，因为这些IO Model的区别就是在两个阶段上各有不同的情况。</p>
+<h2 id="阻塞IO-blocking-IO"><a href="#阻塞IO-blocking-IO" class="headerlink" title="阻塞IO (blocking IO)"></a>阻塞IO (blocking IO)</h2><p>在linux中，默认情况下，所有的socket都是blocking，一个典型的读操作流程大概是这样的：<br><img src="/images/linux_network_io_models/blocking-io.gif" alt="blocking IO" title="blocking IO"></p>
+<p>当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一阶段：准备数据。对于network io来说，很多时候数据在一开始还没有到达，比如还没有收到一个完整的udp包，这个时候kernel就要等待足够的数据到来。而在用户进程这边，整个进程会一直被阻塞。直到kernel准备好了数据，它就会中数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才接触block状态，重新运行起来。</p>
+<p>所以，blocking IO的特点就是在执行IO的两个阶段都被block了。</p>
+<h2 id="非阻塞IO-non-blocking-IO"><a href="#非阻塞IO-non-blocking-IO" class="headerlink" title="非阻塞IO (non-blocking IO)"></a>非阻塞IO (non-blocking IO)</h2><p>linux下，可以通过设置socket使其变为non-blocking。当对一个non-blocking socket执行读操作时，流程是这个样子：<br><img src="/images/linux_network_io_models/non-blocking-io.gif" alt="non-blocking IO" title="non-blocking IO"><br>从图中可以看出，当用户发出read操作时，如果kernel中的数据还没有准备好，那么它并不会block用户进程，而是会立马返回一个error，从用户进程角度讲，它发起一个read操作后，并不需要等待，而是马上得到一个结果。用户进程判断返回结果是error时，它就知道数据还没准备好，于是它可以再次发送read操作。一旦kernel中的数据准备好了，并且又再次收到用户进程的system call，那么它马上就将数据拷贝到用户内存，然后立马返回。所以，用户进程其实是需要不断的主动询问kernel数据准备好了没有。</p>
+<h2 id="IO复用-IO-multiplexing"><a href="#IO复用-IO-multiplexing" class="headerlink" title="IO复用 (IO multiplexing)"></a>IO复用 (IO multiplexing)</h2><p>IO Multiplexing 这个词大家也许会陌生，但是如果说select,epoll大家就都明白了。有些地方也称这种IO方式为event driven IO。我们都知道，select/epoll的好处就在于单个process就可以同时处理多个网络连接的IO。它的基本原理就是select/epoll这个function会不断的轮询所负责的socket，当某个socket数据到达了，就通知用户进程。它的流程如下：<br>!(IO Multiplexing)[/images/linux_network_io_models/io_multiplexing.gif “IO Multiplexing”]</p>
+<p>当用户进程调用了select，那么整个用户进程会被block，而同时，kernel会监控select所负责的socket，当任何一个socket中的数据准备好了，sekect就会返回。这个时候用户进程再进行read操作，将数据从kernel拷贝到用户进程。这个图和blocking IO的图没有太大的不同，事实上还更差一些。因为这个需要使用两个system call(select和recvfrom),而blocking IO只调用了一个system call(recvfrom)，但是用select的优势在于它可以同时处理多个connection。(多说一句，所以如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用mult-threading + blocking IO 的web server性能好，可能延迟还更大，select/epoll的优势并不在于对于单个连接能处理的多快，而是在于能处理更多的链接 )</p>
+<p>在IO Multiplexing Model中，实际上，对于每一个socket,一般都设置成non-blocking的，但是如上图所示，整个用户的进程都是一直被block的，是不过process是被select这个function block,而不是被socket IO给block。</p>
+<h2 id="异步IO-asynchronous-IO"><a href="#异步IO-asynchronous-IO" class="headerlink" title="异步IO (asynchronous IO)"></a>异步IO (asynchronous IO)</h2><p>linux下的asynchronous IO其实用得很少。先看一下它的流程：<br><img src="/images/linux_network_io_models/asynchronous-io.gif" alt="asynchronous IO" title="asynchoronous IO"></p>
+<p>用户进程发起read操作之后就立即去做其他的事情。而另一个方面，从kernel的角度讲，当它收到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何block,然后kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切完成后，kernel会给用户发送一个signal，告诉它read操作完成了。</p>
+<p>到目前为止，已经将四个IO Model都介绍完了。现在回过头来回答最初的那几个问题：blocking和non-blocking的区别在哪，synchronous IO和asynchronous IO的区别在哪。<br>先回答最简单的这个：blocking vs non-blocking。前面的介绍中其实已经很明确的说明了这两者的区别。调用blocking IO会一直block住对应的进程直到操作完成，而non-blocking IO在kernel还准备数据的情况下会立刻返回。</p>
+<p>在说明synchronous IO和asynchronous IO的区别之前，需要先给出两者的定义。Stevens给出的定义（其实是POSIX的定义）是这样子的：</p>
+<ul>
+<li><strong> A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes; </strong></li>
+<li><strong> An asynchronous I/O operation does not cause the requesting process to be blocked; </strong></li>
+</ul>
+<p>两者的区别就在于synchronous IO做”IO operation”的时候会将process阻塞。按照这个定义，之前所述的blocking IO，non-blocking IO，IO multiplexing都属于synchronous IO。有人可能会说，non-blocking IO并没有被block啊。这里有个非常“狡猾”的地方，定义中所指的”IO operation”是指真实的IO操作，就是例子中的recvfrom这个system call。non-blocking IO在执行recvfrom这个system call的时候，如果kernel的数据没有准备好，这时候不会block进程。但是，当kernel中数据准备好的时候，recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。而asynchronous IO则不一样，当进程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉进程说IO完成。在这整个过程中，进程完全没有被block。</p>
+<p>各个IO Model的比较如图所示：<br><img src="/images/linux_network_io_models/io-models-comparison.gif" alt="Comparison of the five IO models" title="Comparison of the five IO models"></p>
+<p>经过上面的介绍，会发现non-blocking IO和asynchronous IO的区别还是很明显的。在non-blocking IO中，虽然进程大部分时间都不会被block，但是它仍然要求进程去主动的check，并且当数据准备完成以后，也需要进程主动的再次调用recvfrom来将数据拷贝到用户内存。而asynchronous IO则完全不同。它就像是用户进程将整个IO操作交给了他人（kernel）完成，然后他人做完后发信号通知。在此期间，用户进程不需要去检查IO操作的状态，也不需要主动的去拷贝数据。</p>
 
       
     </div>
@@ -488,7 +458,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
       
         <div class="post-tags">
           
-            <a href="/tags/Markdown/" rel="tag">#Markdown</a>
+            <a href="/tags/I-O-Models-同步，异步，阻塞，非阻塞/" rel="tag">#I/O Models 同步，异步，阻塞，非阻塞</a>
           
         </div>
       
@@ -497,13 +467,13 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/06/28/nginx-01-install-and-config/" rel="next" title="nginx安装和配置">
+                <i class="fa fa-chevron-left"></i> nginx安装和配置
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/04/13/CI_Service/" rel="prev" title="Codeigniter框架的service层扩展">
-                Codeigniter框架的service层扩展 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -641,7 +611,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、Markdown文档"><span class="nav-number">1.</span> <span class="nav-text">一、Markdown文档</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、Markdown简单语法规则"><span class="nav-number">2.</span> <span class="nav-text">二、Markdown简单语法规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标题"><span class="nav-number">2.0.1.</span> <span class="nav-text">标题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">2.0.2.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-number">2.0.3.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片与链接"><span class="nav-number">2.0.4.</span> <span class="nav-text">图片与链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#斜体与粗体"><span class="nav-number">2.0.5.</span> <span class="nav-text">斜体与粗体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格"><span class="nav-number">2.0.6.</span> <span class="nav-text">表格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码框"><span class="nav-number">2.0.7.</span> <span class="nav-text">代码框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分割线"><span class="nav-number">2.0.8.</span> <span class="nav-text">分割线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换行"><span class="nav-number">2.0.9.</span> <span class="nav-text">换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#符号转义"><span class="nav-number">2.0.10.</span> <span class="nav-text">符号转义</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞IO-blocking-IO"><span class="nav-number">1.</span> <span class="nav-text">阻塞IO (blocking IO)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非阻塞IO-non-blocking-IO"><span class="nav-number">2.</span> <span class="nav-text">非阻塞IO (non-blocking IO)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO复用-IO-multiplexing"><span class="nav-number">3.</span> <span class="nav-text">IO复用 (IO multiplexing)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步IO-asynchronous-IO"><span class="nav-number">4.</span> <span class="nav-text">异步IO (asynchronous IO)</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

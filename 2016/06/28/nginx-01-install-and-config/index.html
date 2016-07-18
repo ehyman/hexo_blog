@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Markdown," />
+  <meta name="keywords" content="nginx," />
 
 
 
@@ -57,27 +57,31 @@
 
 
 
-<meta name="description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta name="description" content="安装
+依赖包安装nginx依赖主要是PCRE，zlib和openssl这三个依赖包，依赖包可以直接yum安装，1# yum -y install gcc gcc-c++ make libtool zlib zlib-devel openssl openssl-devel pcre pcre-devel
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
+
+也可以源码安装：
+PCRE: the PCRE library – required by">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Markdown——入门指南">
-<meta property="og:url" content="http://www.shymei.com/2016/04/08/Markdown/index.html">
+<meta property="og:title" content="nginx安装和配置">
+<meta property="og:url" content="http://www.shymei.com/2016/06/28/nginx-01-install-and-config/index.html">
 <meta property="og:site_name" content="Hyman">
-<meta property="og:description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta property="og:description" content="安装
+依赖包安装nginx依赖主要是PCRE，zlib和openssl这三个依赖包，依赖包可以直接yum安装，1# yum -y install gcc gcc-c++ make libtool zlib zlib-devel openssl openssl-devel pcre pcre-devel
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
-<meta property="og:image" content="http://www.shymei.com/images/title.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/liebiao.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/yy.jpg">
-<meta property="og:image" content="http://www.shymei.com/images/link_img.jpg">
-<meta property="og:updated_time" content="2016-04-15T05:16:04.535Z">
+
+也可以源码安装：
+PCRE: the PCRE library – required by">
+<meta property="og:updated_time" content="2016-06-27T09:57:02.935Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Markdown——入门指南">
-<meta name="twitter:description" content="本博客采用的是hexo搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。Here we go!
+<meta name="twitter:title" content="nginx安装和配置">
+<meta name="twitter:description" content="安装
+依赖包安装nginx依赖主要是PCRE，zlib和openssl这三个依赖包，依赖包可以直接yum安装，1# yum -y install gcc gcc-c++ make libtool zlib zlib-devel openssl openssl-devel pcre pcre-devel
 
-Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到">
-<meta name="twitter:image" content="http://www.shymei.com/images/title.jpg">
+
+也可以源码安装：
+PCRE: the PCRE library – required by">
 
 
 
@@ -95,7 +99,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
   };
 </script>
 
-  <title> Markdown——入门指南 | Hyman </title>
+  <title> nginx安装和配置 | Hyman </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -367,7 +371,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
             
             
               
-                Markdown——入门指南
+                nginx安装和配置
               
             
           </h1>
@@ -379,8 +383,8 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-08T05:14:17+08:00" content="2016-04-07">
-              2016-04-07
+            <time itemprop="dateCreated" datetime="2016-06-28T01:29:16+08:00" content="2016-06-27">
+              2016-06-27
             </time>
           </span>
 
@@ -406,73 +410,21 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
       
 
       
-        <p>本博客采用的是<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo</a>搭建，Hexo 使用 Markdown（或其他渲染引擎）解析文章，虽然之前用dukuwiki时候<br>接触过markdown，但是用的不是很熟练，基本是看着文档的语法在写，所以此文章权当全面了解markdown，提高自己markdown的使用技能。<br>Here we go!</p>
-<blockquote>
-<p>Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到这里请不要被「标记」、「语言」所迷惑，Markdown 的语法十分简单。常用的标记符号也不超过十个，这种相对于更为复杂的 HTML 标记语言来说，Markdown 可谓是十分轻量的，学习成本也不需要太多，且一旦熟悉这种语法规则，会有一劳永逸的效果。</p>
-</blockquote>
-<h1 id="一、Markdown文档"><a href="#一、Markdown文档" class="headerlink" title="一、Markdown文档"></a>一、Markdown文档</h1><blockquote>
-<ul>
-<li><a href="http://daringfireball.net/projects/syntax" target="_blank" rel="external">创始人 John Gruber 的 Markdown 语法说明</a></li>
-<li><a href="http://wowubuntu.com/#list" target="_blank" rel="external">Markdown 中文版语法说明</a></li>
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><h3 id="依赖包安装"><a href="#依赖包安装" class="headerlink" title="依赖包安装"></a>依赖包安装</h3>nginx依赖主要是PCRE，zlib和openssl这三个依赖包，依赖包可以直接yum安装，<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum -y install gcc gcc-c++ make libtool zlib zlib-devel openssl openssl-devel pcre pcre-devel</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-</blockquote>
-<h1 id="二、Markdown简单语法规则"><a href="#二、Markdown简单语法规则" class="headerlink" title="二、Markdown简单语法规则"></a>二、Markdown简单语法规则</h1><h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a><strong>标题</strong></h3><p><img src="/images/title.jpg" alt="markdown title" title="标题"><br>在 Markdown 中，如果一段文字被定义为标题，只要在这段文字前加 # 号即可。</p>
-<p><code># 一级标题</code><br><code>## 二级标题</code><br><code>### 三级标题</code><br><code>#### 四级标题</code><br>以此类推，一共6级标题。建议在#号后面加一个空格，这是markdown的最标准写法。</p>
-<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a><strong>列表</strong></h3><p>列表分为有序列表和无序列表，无序列表只要在文字前面加上 <code>+</code>、<code>-</code> 或 <code>*</code> 即可变为无序列表，有序列表则在文字前面加上1. 2. 3.，符号和文字之间加一个空格符。<br><img src="/images/liebiao.jpg" alt="markdown 列表" title="列表"></p>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a><strong>引用</strong></h3><p>如果你需要引用一小段别处的句子，那么就要用引用的格式。</p>
-<blockquote>
-<p>例如这样</p>
-</blockquote>
-<p>只需要在文本前加入 &gt; 这种尖括号（大于号）即可<br><img src="/images/yy.jpg" alt="markdown 引用" title="引用"></p>
-<h3 id="图片与链接"><a href="#图片与链接" class="headerlink" title="图片与链接"></a><strong>图片与链接</strong></h3><p>图片：<code>![alt text](image url “image title”)</code><br>链接：<code>[alt text](link url)</code><br>插入链接与插入图片的语法很像，区别在一个!号<br><img src="/images/link_img.jpg" alt="markdown 图片与链接" title="图片与链接"></p>
-<p>链接的高级技巧</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">这个链接用 <span class="number">1</span> 作为网址变量 [Google][<span class="number">1</span>].</span><br><span class="line">这个链接用 yahoo 作为网址变量 [Yahoo!][yahoo].</span><br><span class="line">然后在文档的结尾为变量赋值（网址）</span><br><span class="line"></span><br><span class="line">  [<span class="number">1</span>]: http:<span class="comment">//www.google.com/</span></span><br><span class="line">  [yahoo]: http:<span class="comment">//www.yahoo.com/</span></span><br></pre></td></tr></table></figure>
-<h3 id="斜体与粗体"><a href="#斜体与粗体" class="headerlink" title="斜体与粗体"></a><strong>斜体与粗体</strong></h3><p>Markdown 的粗体和斜体也非常简单，用两个 <code>*</code> 包含一段文本就是粗体的语法，用一个 <code>*</code> 包含一段文本就是斜体的语法。</p>
-<p>例如：<code>**这里是粗体**</code> <code>*这里是斜体*</code> 解析之后就是：<strong>这里是粗体</strong> <em>这里是斜体</em></p>
-<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a><strong>表格</strong></h3><p>表格比较累人，例子如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col <span class="number">3</span> is      | right-aligned | $<span class="number">1600</span> |</span><br><span class="line">| col <span class="number">2</span> is      | centered      |   $<span class="number">12</span> |</span><br><span class="line">| zebra stripes | are neat      |    $<span class="number">1</span> |</span><br></pre></td></tr></table></figure></p>
-<p>这种语法生成的表格如下：</p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">Are</th>
-<th style="text-align:right">Cool</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<h3 id="代码框"><a href="#代码框" class="headerlink" title="代码框"></a><strong>代码框</strong></h3><p>通常我们会根据您的代码片段适配合适的高亮方法，但你也可以用 <code>```</code> 包裹一段代码，并指定一种语言（当你的代码较多时推荐使用这种方法）</p>
-<p>例如：<br><code><br>```javascript<br>$(document).ready(function () {<br>    alert(‘hello world’);<br>});<br>```<br></code><br>会生成如下格式语法高亮：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	alert(<span class="string">'hello world'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a><strong>分割线</strong></h3><p>分割线的语法只需要三个 <code>*</code> 号，例如：<br><code>***</code><br>生成的分割线为：</p>
-<hr>
-<h3 id="换行"><a href="#换行" class="headerlink" title="换行"></a><strong>换行</strong></h3><p>如果要新起一个段落，请空一行，实现 </p><p> 的效果</p>
-<hr>
-<h3 id="符号转义"><a href="#符号转义" class="headerlink" title="符号转义"></a><strong>符号转义</strong></h3><p>如果你的描述中需要用到 markdown 的符号，比如 <code>_ # *</code> 等，但又不想他被转义，这时候可以在这些符号前加反斜杠，如 \_ \# \* 进行避免。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\_不想这里的文本变斜体\_</span><br><span class="line">\*\*不想这里的文本被加粗\*\*</span><br></pre></td></tr></table></figure></p>
-<p>Markdown 支持在下面这些符号前面加上反斜杠来帮助插入普通的符号：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\   反斜杠</span><br><span class="line">`   反引号</span><br><span class="line">*   星号</span><br><span class="line">_   底线</span><br><span class="line">&#123;&#125;  大括号</span><br><span class="line">[]  方括号</span><br><span class="line">()  括号</span><br><span class="line"><span class="comment">#   井字号</span></span><br><span class="line">+    加号</span><br><span class="line">-    减号</span><br><span class="line">.   英文句点</span><br><span class="line">!   惊叹号</span><br></pre></td></tr></table></figure></p>
-<p>好吧，基础语法基本就说到这里，后面有一些别的点或技巧，再补充！^_^!</p>
-<blockquote>
-<p>相关参考链接 :</p>
+<p>也可以源码安装：</p>
+<p>PCRE: the PCRE library – required by NGINX Core and Rewrite modules and provides support for regular expressions.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.38.tar.gz</span><br><span class="line">$ tar -zxf pcre-8.38.tar.gz</span><br><span class="line">$ cd pcre-8.38</span><br><span class="line">$ ./configure</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>zlib: the zlib library – required by NGINX Gzip module for headers compression.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://zlib.net/zlib-1.2.8.tar.gz</span><br><span class="line">$ tar -zxf zlib-1.2.8.tar.gz</span><br><span class="line">$ cd zlib-1.2.8</span><br><span class="line">$ ./configure</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>openssl: the OpenSSL library – required by NGINX SSL modules to support the HTTPS protocol.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://www.openssl.org/source/openssl-1.0.2f.tar.gz</span><br><span class="line">$ tar -zxf openssl-1.0.2f.tar.gz</span><br><span class="line">$ cd openssl-1.0.2f</span><br><span class="line">$ ./configure darwin64-x86_64-cc --prefix=/usr</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure></p>
 <ul>
-<li><a href="http://www.jianshu.com/p/1e402922ee32/" target="_blank" rel="external">Markdown——入门指南</a></li>
-<li><a href="https://segmentfault.com/t/blogs" target="_blank" rel="external">markdown语法</a> </li>
+<li><h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3>从<a href="http://nginx.org/en/download.html" target="_blank" rel="external">http://nginx.org/en/download.html</a>下载nginx稳定版本，解压安装，我当前稳定版本是<code>nginx-1.10.1</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://nginx.org/download/nginx-1.10.1.tar.gz</span><br><span class="line">$ tar zxvf nginx-1.10.1.tar.gz</span><br><span class="line">$ cd nginx-1.10.1</span><br><span class="line">$ ./configure --with-pcre \</span><br><span class="line">    	--with-http_stub_status_module \</span><br><span class="line">    	--with-http_ssl_module \</span><br><span class="line">    	--with-http_gzip_static_module \</span><br><span class="line">    	--with-http_realip_module</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
+<p>ok, 安装完毕。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><blockquote>
+<p>文章参考<br>    <a href="https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/" target="_blank" rel="external">https://www.nginx.com/resources/admin-guide/installing-nginx-open-source/</a><br>    <a href="http://seanlook.com/2015/05/17/nginx-install-and-config/" target="_blank" rel="external">http://seanlook.com/2015/05/17/nginx-install-and-config/</a></p>
 </blockquote>
 
       
@@ -488,7 +440,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
       
         <div class="post-tags">
           
-            <a href="/tags/Markdown/" rel="tag">#Markdown</a>
+            <a href="/tags/nginx/" rel="tag">#nginx</a>
           
         </div>
       
@@ -497,12 +449,16 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/06/27/ajaxFileUpload/" rel="next" title="ajax文件上传的另外一种思路">
+                <i class="fa fa-chevron-left"></i> ajax文件上传的另外一种思路
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/04/13/CI_Service/" rel="prev" title="Codeigniter框架的service层扩展">
-                Codeigniter框架的service层扩展 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/07/18/network-io-model/" rel="prev" title="Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞">
+                Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -641,7 +597,7 @@ Markdown 是一种轻量级的「标记语言」，它的优点很多，目前�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、Markdown文档"><span class="nav-number">1.</span> <span class="nav-text">一、Markdown文档</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、Markdown简单语法规则"><span class="nav-number">2.</span> <span class="nav-text">二、Markdown简单语法规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标题"><span class="nav-number">2.0.1.</span> <span class="nav-text">标题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">2.0.2.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-number">2.0.3.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片与链接"><span class="nav-number">2.0.4.</span> <span class="nav-text">图片与链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#斜体与粗体"><span class="nav-number">2.0.5.</span> <span class="nav-text">斜体与粗体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格"><span class="nav-number">2.0.6.</span> <span class="nav-text">表格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码框"><span class="nav-number">2.0.7.</span> <span class="nav-text">代码框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分割线"><span class="nav-number">2.0.8.</span> <span class="nav-text">分割线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换行"><span class="nav-number">2.0.9.</span> <span class="nav-text">换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#符号转义"><span class="nav-number">2.0.10.</span> <span class="nav-text">符号转义</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖包安装"><span class="nav-number">1.1.</span> <span class="nav-text">依赖包安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nginx"><span class="nav-number">1.2.</span> <span class="nav-text">安装nginx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行"><span class="nav-number">3.</span> <span class="nav-text">运行</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
