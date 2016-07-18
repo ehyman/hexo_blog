@@ -69,9 +69,10 @@
 同步IO(synchronous IO)、异步IO(asynchronous IO)、阻塞IO(blocking IO)、非阻塞IO(non-blocking IO)分别是什么，到底有什么区别？其实不同的人给">
 <meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/blocking-io.gif">
 <meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/non-blocking-io.gif">
+<meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/io_multiplexing.gif">
 <meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/asynchronous-io.gif">
 <meta property="og:image" content="http://www.shymei.com/images/linux_network_io_models/io-models-comparison.gif">
-<meta property="og:updated_time" content="2016-07-18T09:58:25.362Z">
+<meta property="og:updated_time" content="2016-07-18T12:56:02.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞">
 <meta name="twitter:description" content="文章转载自IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）  http://blog.csdn.net/historyasamirror/article/details/5778378
@@ -427,10 +428,10 @@
 </ul>
 <p>记住这两点很重要，因为这些IO Model的区别就是在两个阶段上各有不同的情况。</p>
 <h2 id="阻塞IO-blocking-IO"><a href="#阻塞IO-blocking-IO" class="headerlink" title="阻塞IO (blocking IO)"></a>阻塞IO (blocking IO)</h2><p>在linux中，默认情况下，所有的socket都是blocking，一个典型的读操作流程大概是这样的：<br><img src="/images/linux_network_io_models/blocking-io.gif" alt="blocking IO" title="blocking IO"></p>
-<p>当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一阶段：准备数据。对于network io来说，很多时候数据在一开始还没有到达，比如还没有收到一个完整的udp包，这个时候kernel就要等待足够的数据到来。而在用户进程这边，整个进程会一直被阻塞。直到kernel准备好了数据，它就会中数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才接触block状态，重新运行起来。</p>
+<p>当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一阶段：准备数据。对于network io来说，很多时候数据在一开始还没有到达，比如还没有收到一个完整的udp包，这个时候kernel就要等待足够的数据到来。而在用户进程这边，整个进程会一直被阻塞。当kernel一直等到数据准备好了，它就会把数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才解除block状态，重新运行起来。</p>
 <p>所以，blocking IO的特点就是在执行IO的两个阶段都被block了。</p>
 <h2 id="非阻塞IO-non-blocking-IO"><a href="#非阻塞IO-non-blocking-IO" class="headerlink" title="非阻塞IO (non-blocking IO)"></a>非阻塞IO (non-blocking IO)</h2><p>linux下，可以通过设置socket使其变为non-blocking。当对一个non-blocking socket执行读操作时，流程是这个样子：<br><img src="/images/linux_network_io_models/non-blocking-io.gif" alt="non-blocking IO" title="non-blocking IO"><br>从图中可以看出，当用户发出read操作时，如果kernel中的数据还没有准备好，那么它并不会block用户进程，而是会立马返回一个error，从用户进程角度讲，它发起一个read操作后，并不需要等待，而是马上得到一个结果。用户进程判断返回结果是error时，它就知道数据还没准备好，于是它可以再次发送read操作。一旦kernel中的数据准备好了，并且又再次收到用户进程的system call，那么它马上就将数据拷贝到用户内存，然后立马返回。所以，用户进程其实是需要不断的主动询问kernel数据准备好了没有。</p>
-<h2 id="IO复用-IO-multiplexing"><a href="#IO复用-IO-multiplexing" class="headerlink" title="IO复用 (IO multiplexing)"></a>IO复用 (IO multiplexing)</h2><p>IO Multiplexing 这个词大家也许会陌生，但是如果说select,epoll大家就都明白了。有些地方也称这种IO方式为event driven IO。我们都知道，select/epoll的好处就在于单个process就可以同时处理多个网络连接的IO。它的基本原理就是select/epoll这个function会不断的轮询所负责的socket，当某个socket数据到达了，就通知用户进程。它的流程如下：<br>!(IO Multiplexing)[/images/linux_network_io_models/io_multiplexing.gif “IO Multiplexing”]</p>
+<h2 id="IO复用-IO-multiplexing"><a href="#IO复用-IO-multiplexing" class="headerlink" title="IO复用 (IO multiplexing)"></a>IO复用 (IO multiplexing)</h2><p>IO Multiplexing 这个词大家也许会陌生，但是如果说select,epoll大家就都明白了。有些地方也称这种IO方式为event driven IO。我们都知道，select/epoll的好处就在于单个process就可以同时处理多个网络连接的IO。它的基本原理就是select/epoll这个function会不断的轮询所负责的socket，当某个socket数据到达了，就通知用户进程。它的流程如下：<br><img src="/images/linux_network_io_models/io_multiplexing.gif" alt="IO Multiplexing" title="IO Multiplexing"></p>
 <p>当用户进程调用了select，那么整个用户进程会被block，而同时，kernel会监控select所负责的socket，当任何一个socket中的数据准备好了，sekect就会返回。这个时候用户进程再进行read操作，将数据从kernel拷贝到用户进程。这个图和blocking IO的图没有太大的不同，事实上还更差一些。因为这个需要使用两个system call(select和recvfrom),而blocking IO只调用了一个system call(recvfrom)，但是用select的优势在于它可以同时处理多个connection。(多说一句，所以如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用mult-threading + blocking IO 的web server性能好，可能延迟还更大，select/epoll的优势并不在于对于单个连接能处理的多快，而是在于能处理更多的链接 )</p>
 <p>在IO Multiplexing Model中，实际上，对于每一个socket,一般都设置成non-blocking的，但是如上图所示，整个用户的进程都是一直被block的，是不过process是被select这个function block,而不是被socket IO给block。</p>
 <h2 id="异步IO-asynchronous-IO"><a href="#异步IO-asynchronous-IO" class="headerlink" title="异步IO (asynchronous IO)"></a>异步IO (asynchronous IO)</h2><p>linux下的asynchronous IO其实用得很少。先看一下它的流程：<br><img src="/images/linux_network_io_models/asynchronous-io.gif" alt="asynchronous IO" title="asynchoronous IO"></p>
