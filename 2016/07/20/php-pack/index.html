@@ -70,7 +70,7 @@
 写在前面的话本文介绍的是通过二进制数据包的方式通信，演示语言为PHP。PHP提供了pack/unpack函数来进行二进制打包和二进制解包。在具体讲解之前，我们先来了解一些基础知识。
 什么是字节序在不同的计算机体系结构中，对于数据(比特、字节、字)等的存储和传输机制有所不同，因而引发了计算机领域中一个潜在但是又很重要的问题，即通信双方交流的信息单元">
 <meta property="og:image" content="http://www.shymei.com/images/php_pack_format_characters.gif">
-<meta property="og:updated_time" content="2016-07-19T10:20:00.679Z">
+<meta property="og:updated_time" content="2016-07-19T10:22:17.971Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP之深入pack/unpack">
 <meta name="twitter:description" content="文章转载自：PHP:深入pack/unpack
@@ -525,7 +525,30 @@
 </table>
 <p>然实际中可能会涉及到各种校验。本文为了简单，只是列举一下通常的工作流程及处理的方式。</p>
 <p>登录(执行命储1001)</p>
-<p>| 字段        |字节数|类型|说明|<br>|用户名    |30|uchar[30]|登录用户名|<br>|密码|32|uchar[32]|登录密码|</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th style="text-align:center">字节数</th>
+<th style="text-align:right">类型</th>
+<th style="text-align:right">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户名</td>
+<td style="text-align:center">30</td>
+<td style="text-align:right">uchar[30]</td>
+<td style="text-align:right">登录用户名</td>
+</tr>
+<tr>
+<td>密码</td>
+<td style="text-align:center">32</td>
+<td style="text-align:right">uchar[32]</td>
+<td style="text-align:right">登录密码</td>
+</tr>
+</tbody>
+</table>
 <p>包头是定长的，通过计算可知包头占7个字节，并且包头在包体之前。比如用户陈一回需要登录，密码是123456，则代码如下:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$version    = <span class="number">1</span>;</span><br><span class="line">$result     = <span class="number">0</span>;</span><br><span class="line">$command_id = <span class="number">1001</span>;</span><br><span class="line">$username   = <span class="string">"陈一回"</span>;</span><br><span class="line">$password   = md5(<span class="string">"123456"</span>);</span><br><span class="line"><span class="comment">// 构造包体</span></span><br><span class="line">$bin_body   = pack(<span class="string">"a30a32"</span>, $username, $password);</span><br><span class="line"><span class="comment">// 包体长度</span></span><br><span class="line">$body_len   = strlen($bin_body);</span><br><span class="line">$bin_head   = pack(<span class="string">"nCns"</span>, $body_len, $version, $command_id, $result);</span><br><span class="line">$bin_data   = $bin_head . $bin_body;</span><br><span class="line"><span class="comment">// 发送数据</span></span><br><span class="line"><span class="comment">// socket_write($socket, $bin_data, strlen($bin_data));</span></span><br><span class="line"><span class="comment">// socket_close($socket);</span></span><br></pre></td></tr></table></figure></p>
 <p>服务器端通过读取定长包头，拿到包体长度，再读取并解析包体。大致的过程就是这样。当然服务器端也会返回响应包，客户端做相应的读取处理。</p>
 <blockquote>
