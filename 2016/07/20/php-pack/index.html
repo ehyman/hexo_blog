@@ -1,0 +1,930 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PHP pack/unpack," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="文章转载自：PHP:深入pack/unpack
+
+写在前面的话本文介绍的是通过二进制数据包的方式通信，演示语言为PHP和Golang。PHP提供了pack/unpack函数来进行二进制打包和二进制解包。在具体讲解之前，我们先来了解一些基础知识。
+什么是字节序在不同的计算机体系结构中，对于数据(比特、字节、字)等的存储和传输机制有所不同，因而引发了计算机领域中一个潜在但是又很重要的问题，即通信双方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP之深入pack/unpack">
+<meta property="og:url" content="http://www.shymei.com/2016/07/20/php-pack/index.html">
+<meta property="og:site_name" content="Hyman">
+<meta property="og:description" content="文章转载自：PHP:深入pack/unpack
+
+写在前面的话本文介绍的是通过二进制数据包的方式通信，演示语言为PHP和Golang。PHP提供了pack/unpack函数来进行二进制打包和二进制解包。在具体讲解之前，我们先来了解一些基础知识。
+什么是字节序在不同的计算机体系结构中，对于数据(比特、字节、字)等的存储和传输机制有所不同，因而引发了计算机领域中一个潜在但是又很重要的问题，即通信双方">
+<meta property="og:image" content="http://www.shymei.com/images/php_pack_format_characters.gif">
+<meta property="og:updated_time" content="2016-07-19T10:05:27.291Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP之深入pack/unpack">
+<meta name="twitter:description" content="文章转载自：PHP:深入pack/unpack
+
+写在前面的话本文介绍的是通过二进制数据包的方式通信，演示语言为PHP和Golang。PHP提供了pack/unpack函数来进行二进制打包和二进制解包。在具体讲解之前，我们先来了解一些基础知识。
+什么是字节序在不同的计算机体系结构中，对于数据(比特、字节、字)等的存储和传输机制有所不同，因而引发了计算机领域中一个潜在但是又很重要的问题，即通信双方">
+<meta name="twitter:image" content="http://www.shymei.com/images/php_pack_format_characters.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> PHP之深入pack/unpack | Hyman </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hyman</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">墨迹，未干...</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-High"> 
+      <a title="把这个链接拖到你的Chrome收藏夹工具栏中" 
+      href='javascript:(function() {
+            function c() {
+                var e = document.createElement("link");
+                e.setAttribute("type", "text/css");
+                e.setAttribute("rel", "stylesheet");
+                e.setAttribute("href", f);
+                e.setAttribute("class", l);
+                document.body.appendChild(e)
+            }
+         
+            function h() {
+                var e = document.getElementsByClassName(l);
+                for (var t = 0; t < e.length; t++) {
+                    document.body.removeChild(e[t])
+                }
+            }
+         
+            function p() {
+                var e = document.createElement("div");
+                e.setAttribute("class", a);
+                document.body.appendChild(e);
+                setTimeout(function() {
+                    document.body.removeChild(e)
+                }, 100)
+            }
+         
+            function d(e) {
+                return {
+                    height : e.offsetHeight,
+                    width : e.offsetWidth
+                }
+            }
+         
+            function v(i) {
+                var s = d(i);
+                return s.height > e && s.height < n && s.width > t && s.width < r
+            }
+         
+            function m(e) {
+                var t = e;
+                var n = 0;
+                while (!!t) {
+                    n += t.offsetTop;
+                    t = t.offsetParent
+                }
+                return n
+            }
+         
+            function g() {
+                var e = document.documentElement;
+                if (!!window.innerWidth) {
+                    return window.innerHeight
+                } else if (e && !isNaN(e.clientHeight)) {
+                    return e.clientHeight
+                }
+                return 0
+            }
+         
+            function y() {
+                if (window.pageYOffset) {
+                    return window.pageYOffset
+                }
+                return Math.max(document.documentElement.scrollTop, document.body.scrollTop)
+            }
+         
+            function E(e) {
+                var t = m(e);
+                return t >= w && t <= b + w
+            }
+         
+            function S() {
+                var e = document.createElement("audio");
+                e.setAttribute("class", l);
+                e.src = i;
+                e.loop = false;
+                e.addEventListener("canplay", function() {
+                    setTimeout(function() {
+                        x(k)
+                    }, 500);
+                    setTimeout(function() {
+                        N();
+                        p();
+                        for (var e = 0; e < O.length; e++) {
+                            T(O[e])
+                        }
+                    }, 15500)
+                }, true);
+                e.addEventListener("ended", function() {
+                    N();
+                    h()
+                }, true);
+                e.innerHTML = " <p>If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.</p> <p>";
+                document.body.appendChild(e);
+                e.play()
+            }
+         
+            function x(e) {
+                e.className += " " + s + " " + o
+            }
+         
+            function T(e) {
+                e.className += " " + s + " " + u[Math.floor(Math.random() * u.length)]
+            }
+         
+            function N() {
+                var e = document.getElementsByClassName(s);
+                var t = new RegExp("\\b" + s + "\\b");
+                for (var n = 0; n < e.length; ) {
+                    e[n].className = e[n].className.replace(t, "")
+                }
+            }
+         
+            var e = 30;
+            var t = 30;
+            var n = 350;
+            var r = 350;
+            var i = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3";
+            var s = "mw-harlem_shake_me";
+            var o = "im_first";
+            var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
+            var a = "mw-strobe_light";
+            var f = "//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css";
+            var l = "mw_added_css";
+            var b = g();
+            var w = y();
+            var C = document.getElementsByTagName("*");
+            var k = null;
+            for (var L = 0; L < C.length; L++) {
+                var A = C[L];
+                if (v(A)) {
+                    if (E(A)) {
+                        k = A;
+                        break
+                    }
+                }
+            }
+            if (A === null) {
+                console.warn("Could not find a node of the right size. Please try a different page.");
+                return
+            }
+            c();
+            S();
+            var O = [];
+            for (var L = 0; L < C.length; L++) {
+                var A = C[L];
+                if (v(A)) {
+                    O.push(A)
+                }
+            }
+        })()    '>High一下</a> 
+      </li>
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                PHP之深入pack/unpack
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-20T01:25:19+08:00" content="2016-07-19">
+              2016-07-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>文章转载自：<a href="http://my.oschina.net/goal/blog/195749" target="_blank" rel="external">PHP:深入pack/unpack</a></p>
+</blockquote>
+<h2 id="写在前面的话"><a href="#写在前面的话" class="headerlink" title="写在前面的话"></a>写在前面的话</h2><p>本文介绍的是通过二进制数据包的方式通信，演示语言为PHP和Golang。PHP提供了pack/unpack函数来进行二进制打包和二进制解包。在具体讲解之前，我们先来了解一些基础知识。</p>
+<h2 id="什么是字节序"><a href="#什么是字节序" class="headerlink" title="什么是字节序"></a>什么是字节序</h2><p>在不同的计算机体系结构中，对于数据(比特、字节、字)等的存储和传输机制有所不同，因而引发了计算机领域中一个潜在但是又很重要的问题，即通信双方交流的信息单元应该以什么样的顺序进行传送。如果达不成一致的规则，计算机的通信与存储将会无法进行。目前在各种体系的计算机中通常采用的字节存储机制主要有两种：大端(Big-endian)和小端(Little-endian)。这里所说的大端和小端即是字节序。</p>
+<h3 id="MSB和LSB"><a href="#MSB和LSB" class="headerlink" title="MSB和LSB"></a>MSB和LSB</h3><ul>
+<li>MSB是Most Significant Bit/Byte的首字母缩写，通常译为最重要的位或最重要的字节。它通常用来表示在一个bit序列(如一个byte是8个bit组成的一个序列)或一个byte序列(如word是两个byte组成的一个序列)中对整个序列取值影响最大的那个bit/byte。</li>
+<li>LSB是Least Significant Bit/Byte的首字母缩写，通常译为最不重要的位或最不重要的字节。它通常用来表明在一个bit序列(如一个byte是8个bit组成的一个序列)或一个byte序列(如word是两个byte组成的一个序列)中对整个序列取值影响最小的那个bit/byte。</li>
+<li>对于一个十六进制int类型整数0x12345678来说，0x12就是MSB，0x78就是LSB。而对于0x78这个字节而言，它的二进制是01111000，那么最左边的那个0就是MSB，最右边的那个0就是LSB。</li>
+</ul>
+<h3 id="大端序"><a href="#大端序" class="headerlink" title="大端序"></a>大端序</h3><ul>
+<li>大端序又叫网络字节序。大端序规定高位字节在存储时放在低地址上，在传输时高位字节放在流的开始；低位字节在存储时放在高地址上，在传输时低位字节放在流的末尾。</li>
+</ul>
+<h3 id="小端序"><a href="#小端序" class="headerlink" title="小端序"></a>小端序</h3><ul>
+<li>小端序规定高位字节在存储时放在高地址上，在传输时高位字节放在流的末尾；低位字节在存储时放在低地址上，在传输时低位字节放在流的开始。</li>
+</ul>
+<h3 id="网络字节序"><a href="#网络字节序" class="headerlink" title="网络字节序"></a>网络字节序</h3><ul>
+<li>网络字节序是指大端序。TCP/IP都是采用网络字节序的方式，java也是使用大端序方式存储。</li>
+</ul>
+<h3 id="主机字节序"><a href="#主机字节序" class="headerlink" title="主机字节序"></a>主机字节序</h3><ul>
+<li>主机字节序代表本机的字节序。一般是小端序，但也有一些是大端序。</li>
+<li>主机字节序用在协议描述中则是指小端序。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>字节序只针对于多字节类型的数据。比如对于int类型整数0x12345678，它占有4个字节的存储空间，存储方式有大端(0x12, 0x34, 0x56, 0x78)和小端(0x78, 0x56, 0x34, 0x12)两种。可以看到，在大端或小端的存储方式中，是以字节为单位的。所以对于单字节类型的数据，不存在字节序这个说法。</p>
+<h2 id="pack-unpack详解"><a href="#pack-unpack详解" class="headerlink" title="pack/unpack详解"></a>pack/unpack详解</h2><p>PHP pack函数用于将其它进制的数字压缩到位字符串之中。也就是把其它进制数字转化为ASCII码字符串。<br><img src="/images/php_pack_format_characters.gif" alt="PHP pack format characters" title="PHP pack format characters"></p>
+<p>格式字符翻译</p>
+<ul>
+<li>a – 将字符串空白以 NULL 字符填满</li>
+<li>A – 将字符串空白以 SPACE 字符 (空格) 填满</li>
+<li>h – 16进制字符串，低位在前以半字节为单位</li>
+<li>H – 16进制字符串，高位在前以半字节为单位</li>
+<li>c – 有符号字符<ul>
+<li>C – 无符号字符</li>
+<li>s – 有符号短整数 (16位，主机字节序)</li>
+<li>S – 无符号短整数 (16位，主机字节序)</li>
+<li>n – 无符号短整数 (16位, 大端字节序)</li>
+<li>v – 无符号短整数 (16位, 小端字节序)</li>
+<li>i – 有符号整数 (依赖机器大小及字节序)</li>
+<li>I – 无符号整数 (依赖机器大小及字节序)</li>
+<li>l – 有符号长整数 (32位，主机字节序)</li>
+<li>L – 无符号长整数 (32位，主机字节序)</li>
+<li>N – 无符号长整数 (32位, 大端字节序)</li>
+<li>V – 无符号长整数 (32位, 小端字节序)</li>
+<li>f – 单精度浮点数 (依计算机的范围)</li>
+</ul>
+</li>
+<li><p>d – 双精度浮点数 (依计算机的范围)</p>
+<ul>
+<li>x – 空字节</li>
+<li>X – 倒回一位</li>
+<li><p>@ – 填入 NULL 字符到绝对位置</p>
+<p>格式字符详解</p>
+<p>pack/unpack允许使用修饰符*和数字，紧跟在格式字符之后，用于指定该格式的个数；</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>a和A都是用来打包字符串的，它们的唯一区别就是当小于定长时的填充方式。a以NULL填充，NULL事实上是’\0’的表示，代表空字节，8个位上全是0。A以空格填充，空格也即ASCII码为32的字符。这里有一个关于填充的使用场景的例子：请求登录的数据包规定用户名不超过20个字节，密码经过md5加密后是固定的32个字节。用户名就是变长的，为了便于服务器端读取和处理，通常会填充成定长。当然，这只是使用的方式之一，事实上还可以用变长的方式传递数据包，但这不在本文的探讨范围内。字符串有一点麻烦的是编码问题，尤其是在跟不同的平台通信时更为突出。比如在用pack进行打包字符串时，事实上是将字符内部的编码打包进去。单字节字符就没有问题，因为单字节在所有平台上都是一致的。来看个例子(pack.php)：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	$bin = pack(<span class="string">"a"</span>, <span class="string">"d"</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"output: "</span> . $bin . <span class="string">"\n"</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"output: 0x"</span> . bin2hex($bin) . <span class="string">"\n"</span>;</span><br><span class="line">	$ php -f pack.php</span><br><span class="line">	output: d</span><br><span class="line">	output: <span class="number">0x64</span></span><br></pre></td></tr></table></figure>
+<p>$bin是返回的二进制字符，您可以直接输出它，PHP知道如何处理。通过bin2hex方法将$bin转换成十六进制可以知道，十六进制0x64表示的是字符d。对于中文字符(多字节字符)来说，通常有GBK编码、BIG5编码以及UTF8编码等。比如在GBK编码中，一个中文字符采用2个字节来表示；在UTF8编码中，一个中文字符采用3个字节来表示。这通常需要协商采用统一的编码，否则会由于内部的表示不一致导致无法处理。在PHP中只要将文件保存为特定的编码格即可，其它语言可能跟操作系统相关，因此或许需要编码转换。本文的例子一概基于UTF8编码。继续来看个例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	$bin = pack(<span class="string">"a3"</span>, <span class="string">"中"</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"output: 0x"</span> . bin2hex($bin) . <span class="string">"\n"</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"output: "</span> . chr(<span class="number">0xe4</span>) . chr(<span class="number">0xb8</span>) . chr(<span class="number">0xad</span>) . <span class="string">"\n"</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"output: "</span> . $bin&#123;<span class="number">0</span>&#125; . $bin&#123;<span class="number">1</span>&#125; . $bin&#123;<span class="number">2</span>&#125; . <span class="string">"\n"</span>;</span><br><span class="line">	$ php -f pack.php</span><br><span class="line">	output: <span class="number">0xe4b8ad</span></span><br><span class="line">	output: 中</span><br><span class="line">	output: 中</span><br></pre></td></tr></table></figure>
+<p>您可能会觉得很奇怪，后面2个输出是一样的。ASCII码表示单字节字符(其中包括英文字母、数字、英文标点符号、不可见字符以及控制字符等等)，它总是小于0x80，即小于十进制的128。当在处理字符时，如果字节小于0x80，则把它当作单字节来处理，否则会继续读取下一个字节，这通常跟编码有关，GBK会将2个字节当成一个字符来处理，UTF8则需要3个字节。有时候在PHP中需要做类似的处理，比如计算字符串中字符的个数(字符串可能包含单字节和多字节)，strlen方法只能计算字节数，而mb_strlen需要开启扩展。类似这样的需求，其实很容易处理：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mbstrlen</span><span class="params">($str)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	$len = strlen($str);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ($len &lt;= <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	$count  = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $len; $i++)</span><br><span class="line">	&#123;</span><br><span class="line">		$count++;</span><br><span class="line">		<span class="keyword">if</span> (ord($str&#123;$i&#125;) &gt;= <span class="number">0x80</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			$i += <span class="number">2</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> $count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"output: "</span> . mbstrlen(<span class="string">"中国so强大！"</span>) . <span class="string">"\n"</span>;</span><br><span class="line">$ php -f pack.php</span><br><span class="line">output: <span class="number">7</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="unpack的用法"><a href="#unpack的用法" class="headerlink" title="unpack的用法"></a>unpack的用法</h3><p>unpack是用来解包经过pack打包的数据包，如果成功，则返回数组。其中格式化字符和执行pack时一一对应，但是需要额外的指定一个key，用作返回数组的key。多个字段用/分隔。例如：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$bin = @pack(<span class="string">"a9SS"</span>, <span class="string">"陈一回"</span>, <span class="number">20</span>, <span class="number">1</span>);</span><br><span class="line">$data = @unpack(<span class="string">"a9name/sage/Sgender"</span>, $bin);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (is_array($data))</span><br><span class="line">&#123;</span><br><span class="line">		print_r($data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ php  -f pack.php</span><br><span class="line"><span class="keyword">Array</span></span><br><span class="line">(</span><br><span class="line">     [name] =&gt; 陈一回</span><br><span class="line">	 [age] =&gt; <span class="number">20</span></span><br><span class="line">     [gender] =&gt; <span class="number">1</span>	</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<h3 id="一些例子"><a href="#一些例子" class="headerlink" title="一些例子"></a>一些例子</h3><ul>
+<li><p>判断大小端</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">IsBigEndian</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	$bin = pack(<span class="string">"L"</span>, <span class="number">0x12345678</span>);</span><br><span class="line">	$hex = bin2hex($bin);</span><br><span class="line">	<span class="keyword">if</span> (ord(pack(<span class="string">"H2"</span>, $hex)) === <span class="number">0x78</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">FALSE</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">TRUE</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (IsBigEndian())</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"大端序"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"小端序"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line">$ php -f pack.php</span><br><span class="line">小端序</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>网络通信<br>比如现在要通过PHP发送数据包到服务器来登录。在仅需要提供用户名(最多30个字节)和密码(md5之后固定为32字节)的情况下，可以构造如下数据包(当然这事先需要跟服务器协商好数据包的规范，本例以网络字节序通信)：<br>| 字段        |字节数|说明|<br>| ————- |:————-:| —–:|<br>| 包头|定长     |每一个通信消息必须包含的内容|<br>| 包体|不定长     |    根据每个通信消息的不同产生变化|</p>
+</li>
+</ul>
+<p>其中包头详细内容如下：<br>| 字段        |字节数|类型|说明|<br>| ————- |:————-:| —–:| —–:|<br>|pkg_len|2|ushort|整个包的长度，不超过4K|<br>|version|1|uchar|通讯协议版本号|<br>|command_id|2|ushort|消息命令ID|<br>|result|2|short|请求时不起作用；请求返回时使用|</p>
+<p>然实际中可能会涉及到各种校验。本文为了简单，只是列举一下通常的工作流程及处理的方式。</p>
+<p>登录(执行命储1001)<br>| 字段        |字节数|类型|说明|<br>|用户名    |30|uchar[30]|登录用户名|<br>|密码|32|uchar[32]|登录密码|<br>包头是定长的，通过计算可知包头占7个字节，并且包头在包体之前。比如用户陈一回需要登录，密码是123456，则代码如下:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$version    = <span class="number">1</span>;</span><br><span class="line">$result     = <span class="number">0</span>;</span><br><span class="line">$command_id = <span class="number">1001</span>;</span><br><span class="line">$username   = <span class="string">"陈一回"</span>;</span><br><span class="line">$password   = md5(<span class="string">"123456"</span>);</span><br><span class="line"><span class="comment">// 构造包体</span></span><br><span class="line">$bin_body   = pack(<span class="string">"a30a32"</span>, $username, $password);</span><br><span class="line"><span class="comment">// 包体长度</span></span><br><span class="line">$body_len   = strlen($bin_body);</span><br><span class="line">$bin_head   = pack(<span class="string">"nCns"</span>, $body_len, $version, $command_id, $result);</span><br><span class="line">$bin_data   = $bin_head . $bin_body;</span><br><span class="line"><span class="comment">// 发送数据</span></span><br><span class="line"><span class="comment">// socket_write($socket, $bin_data, strlen($bin_data));</span></span><br><span class="line"><span class="comment">// socket_close($socket);</span></span><br></pre></td></tr></table></figure></p>
+<p>服务器端通过读取定长包头，拿到包体长度，再读取并解析包体。大致的过程就是这样。当然服务器端也会返回响应包，客户端做相应的读取处理。</p>
+<blockquote>
+<p><a href="http://www.neatstudio.com/show-2327-1.shtml" target="_blank" rel="external">http://www.neatstudio.com/show-2327-1.shtml</a><br><a href="http://www.cnblogs.com/wanzibox/articles/1283110.html" target="_blank" rel="external">http://www.cnblogs.com/wanzibox/articles/1283110.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP-pack-unpack/" rel="tag">#PHP pack/unpack</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/18/network-io-model/" rel="next" title="Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞">
+                <i class="fa fa-chevron-left"></i> Linux 网络I/O Models之 IO - 同步，异步，阻塞，非阻塞
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="elahyman@gmail.com" />
+          <p class="site-author-name" itemprop="name">elahyman@gmail.com</p>
+          <p class="site-description motion-element" itemprop="description">一花一世界，一叶一菩提</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ehyman" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/shihongyun" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://segmentfault.com/u/hyman" target="_blank">
+                  
+                    <i class="fa fa-sf"></i> SF
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面的话"><span class="nav-number">1.</span> <span class="nav-text">写在前面的话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是字节序"><span class="nav-number">2.</span> <span class="nav-text">什么是字节序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MSB和LSB"><span class="nav-number">2.1.</span> <span class="nav-text">MSB和LSB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大端序"><span class="nav-number">2.2.</span> <span class="nav-text">大端序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小端序"><span class="nav-number">2.3.</span> <span class="nav-text">小端序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络字节序"><span class="nav-number">2.4.</span> <span class="nav-text">网络字节序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主机字节序"><span class="nav-number">2.5.</span> <span class="nav-text">主机字节序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.6.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pack-unpack详解"><span class="nav-number">3.</span> <span class="nav-text">pack/unpack详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#unpack的用法"><span class="nav-number">3.1.</span> <span class="nav-text">unpack的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些例子"><span class="nav-number">3.2.</span> <span class="nav-text">一些例子</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elahyman@gmail.com</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
